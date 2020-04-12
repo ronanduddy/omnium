@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  pluck:
+    build: .
+    image: pluck
+    volumes:
+      - ./:/usr/src/app
+      - .ash_history:/root/.ash_history
