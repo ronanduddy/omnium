@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require 'pry'
-require_relative 'interpreter/tokeniser'
+require_relative 'interpreter/lexer'
 
 loop do
   begin
@@ -11,8 +11,8 @@ loop do
 
     break if input == 'exit'
 
-    tokeniser = Interpreter::Tokeniser.new(input)
-    puts tokeniser.expression
+    lexer = Interpreter::Lexer.new(input)
+    puts lexer.evaluate
   rescue StandardError => e
     puts e.message
   end

@@ -1,21 +1,33 @@
 # frozen_string_literal: true
 
 module Interpreter
+  # A token is a string with an assigned and identified meaning.
+  # Common token names are:
+  #   identifier: names the programmer chooses;
+  #   keyword: names already in the programming language;
+  #   separator (also known as punctuators): punctuation characters and
+  #     paired-delimiters;
+  #   operator: symbols that operate on arguments and produce results;
+  #   literal: numeric, logical, textual, reference literals;
+  #   comment: line, block.
+  # The value of a token can be thought of as a lexeme. 
   class Token
-    INTEGER = :integer
-    PLUS = :plus
-    MINUS = :minus
-    EOF = :eof
+    require_relative 'operators'
+    include Operators
 
     attr_reader :type, :value
 
     def initialize(type, value)
       @type = type
-      @value = value # 0-9, +, -, nil
+      @value = value
     end
 
     def str
       "Token(#{type}, #{value})"
+    end
+
+    def operator?
+      super(value)
     end
   end
 end
