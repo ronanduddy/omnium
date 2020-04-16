@@ -2,12 +2,13 @@ app = pluck
 docker_run = @docker-compose run --rm $(app)
 
 build:
+	@touch .ash_history
 	@docker-compose build
 
 run:
 	$(docker_run) ./lib/interpreter.rb
 
-shell:
+shell: build
 	$(docker_run) sh
 
 bundle:
@@ -17,10 +18,13 @@ test:
 	$(docker_run) bundle exec rspec
 
 guard:
-	$(docker_run) bundle exec guard
+	$(docker_run) bundle exec guard -c
 
 lint:
 	$(docker_run) rubocop -a
+
+irb:
+	$(docker_run) irb
 
 clear:
 	@docker-compose down
