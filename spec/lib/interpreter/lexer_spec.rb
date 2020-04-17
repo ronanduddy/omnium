@@ -37,5 +37,17 @@ RSpec.describe Interpreter::Lexer do
 
       it { is_expected.to eq 0 }
     end
+
+    context 'with text multiplying' do
+      let(:text) { '3 * 2' }
+
+      it { is_expected.to eq 6 }
+    end
+
+    context 'with text dividing' do
+      let(:text) { '4/2' }
+
+      it { is_expected.to eq 2 }
+    end
   end
 end

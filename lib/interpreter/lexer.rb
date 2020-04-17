@@ -47,6 +47,8 @@ module Interpreter
       return Token.new(:integer, string.to_i) if string =~ /[0-9]/
       return Token.new(:plus, string) if string == '+'
       return Token.new(:minus, string) if string == '-'
+      return Token.new(:plus, string) if string == '*'
+      return Token.new(:minus, string) if string == '/'
       return Token.new(:eof, nil) if @scanner.eos?
 
       error("Error tokenising #{string}")
@@ -57,7 +59,10 @@ module Interpreter
 
       case token_type
       when :operator
-        return if current_token.type == :plus || current_token.type == :minus
+        return if current_token.type == :plus ||
+                  current_token.type == :minus ||
+                  current_token.type == :multiply ||
+                  current_token.type == :divide
       when :integer
         return if current_token.type == :integer
       when :eof
