@@ -6,6 +6,8 @@ module Interpreter
   class Lexer
     require_relative 'scanner'
     require_relative 'token'
+    require_relative 'operators'
+    include Operators
 
     class LexerError < StandardError; end
 
@@ -34,10 +36,10 @@ module Interpreter
     def token(string)
       # could create a 'caster' class for this stuff
       return Token.new(:integer, string.to_i) if string =~ /[0-9]/
-      return Token.new(:plus, string) if string == '+'
-      return Token.new(:minus, string) if string == '-'
-      return Token.new(:multiply, string) if string == '*'
-      return Token.new(:divide, string) if string == '/'
+      return Token.new(:plus, string) if plus?(string)
+      return Token.new(:minus, string) if minus?(string)
+      return Token.new(:multiply, string) if multiply?(string)
+      return Token.new(:divide, string) if divide?(string)
       return Token.new(:eof, nil) if @scanner.eos?
 
       error("Error tokenising #{string}")

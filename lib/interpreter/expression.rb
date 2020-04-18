@@ -2,14 +2,10 @@
 
 module Interpreter
   class Expression
-    class OperatorError < StandardError; end
+    require_relative 'operators'
+    include Operators
 
-    OPERATORS = {
-      plus: '+',
-      minus: '-',
-      multipy: '*',
-      divide: '/'
-    }.freeze
+    class OperatorError < StandardError; end
 
     def initialize(args)
       @left = args.fetch(:left)
@@ -23,7 +19,7 @@ module Interpreter
         add
       when OPERATORS[:minus]
         subtract
-      when OPERATORS[:multipy]
+      when OPERATORS[:multiply]
         multipy
       when OPERATORS[:divide]
         divide

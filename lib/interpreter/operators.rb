@@ -2,10 +2,36 @@
 
 module Interpreter
   module Operators
-    OPERATORS = ['+', '-', '*', '/'].freeze
+    PLUS = '+'
+    MINUS = '-'
+    MULTIPLY = '*'
+    DIVIDE = '/'
+
+    OPERATORS = {
+      plus: PLUS,
+      minus: MINUS,
+      multiply: MULTIPLY,
+      divide: DIVIDE
+    }.freeze
+
+    def plus?(character)
+      character == PLUS
+    end
+
+    def minus?(character)
+      character == MINUS
+    end
+
+    def multiply?(character)
+      character == MULTIPLY
+    end
+
+    def divide?(character)
+      character == DIVIDE
+    end
 
     def operator?(character)
-      OPERATORS.include?(character)
+      OPERATORS.values.include?(character)
     end
   end
 end
