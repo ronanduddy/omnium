@@ -3,51 +3,71 @@
 require 'interpreter/lexer'
 
 RSpec.describe Interpreter::Lexer do
-  subject(:lexer) { described_class.new(text) }
+  subject(:lexer) { described_class.new(string) }
+  let(:token_class) { Interpreter::Token }
 
-  let(:text) { '1+1' }
+  describe '#tokens' do
+    subject(:tokens) { lexer.tokens }
 
-  describe '#evaluate' do
-    subject(:evaluate) { lexer.evaluate }
+    {
+      adding: { type: :plus, value: '+' },
+      subtracting: { type: :minus, value: '-' },
+      multipling: { type: :multiply, value: '*' },
+      dividing: { type: :divide, value: '/' }
+    }.each do |operation, token|
+      context "when the input is #{operation}" do
+        {
+          no_spaces: '%{l}%{o}%{r}',
+          space_before: ' %{l}%{o}%{r}',
+          space_after: '%{l}%{o}%{r} ',
+          space_before_operator: '%{l} %{o}%{r}',
+          space_after_operator: '%{l}%{o}% {r}',
+          space_around_operator: '%{l} %{o} %{r}',
+          multiple_spaces: '    %{l}    %{o}    %{r}    '
+        }.each do |scenario, template|
+          context "with #{scenario} for single digit operation" do
+            let(:string) { format(template, l: 9, o: token[:value], r: 3) }
 
-    context 'with valid text' do
-      it { is_expected.to eq 2 }
-    end
+            it 'tokenises the input' do
+              left = tokens[0]
+              expect(left).to be_an_instance_of(token_class)
+              expect(left.type).to eq :integer
+              expect(left.value).to eq 9
 
-    context 'with text containing alpha character' do
-      let(:text) { '1+a' }
+              operator = tokens[1]
+              expect(operator).to be_an_instance_of(token_class)
+              expect(operator.type).to eq token[:type]
+              expect(operator.value).to eq token[:value]
 
-      it { expect { evaluate }.to raise_error(described_class::LexerError) }
-    end
+              right = tokens[2]
+              expect(right).to be_an_instance_of(token_class)
+              expect(right.type).to eq :integer
+              expect(right.value).to eq 3
+            end
+          end
 
-    context 'with text containing spaces' do
-      let(:text) { '1 + 1' }
+          context "with #{scenario} for multiple digit operation" do
+            let(:string) { format(template, l: 99, o: token[:value], r: 33) }
 
-      it { is_expected.to eq 2 }
-    end
+            it 'tokenises the input' do
+              left = tokens[0]
+              expect(left).to be_an_instance_of(token_class)
+              expect(left.type).to eq :integer
+              expect(left.value).to eq 99
 
-    context 'with text containing large numbers' do
-      let(:text) { '1111 + 1111' }
+              operator = tokens[1]
+              expect(operator).to be_an_instance_of(token_class)
+              expect(operator.type).to eq token[:type]
+              expect(operator.value).to eq token[:value]
 
-      it { is_expected.to eq 2222 }
-    end
-
-    context 'with text subtracting' do
-      let(:text) { '1-1' }
-
-      it { is_expected.to eq 0 }
-    end
-
-    context 'with text multiplying' do
-      let(:text) { '3 * 2' }
-
-      it { is_expected.to eq 6 }
-    end
-
-    context 'with text dividing' do
-      let(:text) { '4/2' }
-
-      it { is_expected.to eq 2 }
+              right = tokens[2]
+              expect(right).to be_an_instance_of(token_class)
+              expect(right.type).to eq :integer
+              expect(right.value).to eq 33
+            end
+          end
+        end
+      end
     end
   end
 end

@@ -10,7 +10,7 @@ module Interpreter
   #   operator: symbols that operate on arguments and produce results;
   #   literal: numeric, logical, textual, reference literals;
   #   comment: line, block.
-  # The value of a token can be thought of as a lexeme. 
+  # The value of a token can be thought of as a lexeme.
   class Token
     require_relative 'operators'
     include Operators

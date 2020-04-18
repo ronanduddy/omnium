@@ -11,10 +11,10 @@ module Interpreter
       divide: '/'
     }.freeze
 
-    def initialize(left, operator, right)
-      @left = left
-      @operator = operator
-      @right = right
+    def initialize(args)
+      @left = args.fetch(:left)
+      @operator = args.fetch(:operator)
+      @right = args.fetch(:right)
     end
 
     def evaluate

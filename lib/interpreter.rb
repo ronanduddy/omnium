@@ -3,6 +3,8 @@
 
 require 'pry'
 require_relative 'interpreter/lexer'
+require_relative 'interpreter/parser'
+require_relative 'interpreter/expression'
 
 loop do
   begin
@@ -12,7 +14,9 @@ loop do
     break if input == 'exit'
 
     lexer = Interpreter::Lexer.new(input)
-    puts lexer.evaluate
+    parser = Interpreter::Parser.new(lexer.tokens)
+    expression = Interpreter::Expression.new(parser.evaluate)
+    puts expression.evaluate
   rescue StandardError => e
     puts e.message
   end

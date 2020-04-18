@@ -6,40 +6,29 @@ module Interpreter
   class Lexer
     require_relative 'scanner'
     require_relative 'token'
-    require_relative 'expression'
 
     class LexerError < StandardError; end
 
     def initialize(string)
       @scanner = Scanner.new(string)
-      @tokens = []
     end
 
-    def evaluate
-      tokenise
-
-      # parse
-      left = @tokens[0]
-      verify(left, :integer)
-
-      operator = @tokens[1]
-      verify(operator, :operator)
-
-      right = @tokens[2]
-      verify(right, :integer)
-
-      expression = Expression.new(left.value, operator.value, right.value)
-      expression.evaluate
+    def tokens
+      @tokens ||= tokenise
     end
 
     private
 
     def tokenise
+      tokens = []
+
       loop do
         string = @scanner.next_word || @scanner.next_operator
-        @tokens << token(string)
+        tokens << token(string)
         break if @scanner.eos?
       end
+
+      tokens
     end
 
     def token(string)
@@ -47,29 +36,11 @@ module Interpreter
       return Token.new(:integer, string.to_i) if string =~ /[0-9]/
       return Token.new(:plus, string) if string == '+'
       return Token.new(:minus, string) if string == '-'
-      return Token.new(:plus, string) if string == '*'
-      return Token.new(:minus, string) if string == '/'
+      return Token.new(:multiply, string) if string == '*'
+      return Token.new(:divide, string) if string == '/'
       return Token.new(:eof, nil) if @scanner.eos?
 
       error("Error tokenising #{string}")
-    end
-
-    def verify(current_token, token_type)
-      # I think this would belong in a 'parser'/verifier class
-
-      case token_type
-      when :operator
-        return if current_token.type == :plus ||
-                  current_token.type == :minus ||
-                  current_token.type == :multiply ||
-                  current_token.type == :divide
-      when :integer
-        return if current_token.type == :integer
-      when :eof
-        return if current_token.type == :eof
-      end
-
-      error("Invalid token: #{current_token.str}")
     end
 
     def error(message)
