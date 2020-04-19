@@ -1,21 +1,21 @@
 # frozen_string_literal: true
 
 require 'interpreter/lexer'
+require 'support/shared_examples/tokens'
 
 RSpec.describe Interpreter::Lexer do
   subject(:lexer) { described_class.new(string) }
-  let(:token_class) { Interpreter::Token }
 
   describe '#tokens' do
     subject(:tokens) { lexer.tokens }
 
     {
-      adding: { type: :plus, value: '+' },
-      subtracting: { type: :minus, value: '-' },
-      multipling: { type: :multiply, value: '*' },
-      dividing: { type: :divide, value: '/' }
+      addition: { type: :plus, value: '+' },
+      subtraction: { type: :minus, value: '-' },
+      multiplication: { type: :multiply, value: '*' },
+      division: { type: :divide, value: '/' }
     }.each do |operation, token|
-      context "when the input is #{operation}" do
+      context "when the string is #{operation}" do
         {
           no_spaces: '%{l}%{o}%{r}',
           space_before: ' %{l}%{o}%{r}',
@@ -28,44 +28,50 @@ RSpec.describe Interpreter::Lexer do
           context "with #{scenario} for single digit operation" do
             let(:string) { format(template, l: 9, o: token[:value], r: 3) }
 
-            it 'tokenises the input' do
-              left = tokens[0]
-              expect(left).to be_an_instance_of(token_class)
-              expect(left.type).to eq :integer
-              expect(left.value).to eq 9
-
-              operator = tokens[1]
-              expect(operator).to be_an_instance_of(token_class)
-              expect(operator.type).to eq token[:type]
-              expect(operator.value).to eq token[:value]
-
-              right = tokens[2]
-              expect(right).to be_an_instance_of(token_class)
-              expect(right.type).to eq :integer
-              expect(right.value).to eq 3
+            include_examples 'tokens' do
+              let(:expected) do
+                [
+                  { type: :integer, value: 9 },
+                  { type: token[:type], value: token[:value] },
+                  { type: :integer, value: 3 }
+                ]
+              end
             end
           end
 
           context "with #{scenario} for multiple digit operation" do
             let(:string) { format(template, l: 99, o: token[:value], r: 33) }
 
-            it 'tokenises the input' do
-              left = tokens[0]
-              expect(left).to be_an_instance_of(token_class)
-              expect(left.type).to eq :integer
-              expect(left.value).to eq 99
-
-              operator = tokens[1]
-              expect(operator).to be_an_instance_of(token_class)
-              expect(operator.type).to eq token[:type]
-              expect(operator.value).to eq token[:value]
-
-              right = tokens[2]
-              expect(right).to be_an_instance_of(token_class)
-              expect(right.type).to eq :integer
-              expect(right.value).to eq 33
+            include_examples 'tokens' do
+              let(:expected) do
+                [
+                  { type: :integer, value: 99 },
+                  { type: token[:type], value: token[:value] },
+                  { type: :integer, value: 33 }
+                ]
+              end
             end
           end
+        end
+      end
+    end
+
+    context 'when string contains > two operands' do
+      let(:string) { '1+2-3*4/5' }
+
+      include_examples 'tokens' do
+        let(:expected) do
+          [
+            { type: :integer, value: 1 },
+            { type: :plus, value: '+' },
+            { type: :integer, value: 2 },
+            { type: :minus, value: '-' },
+            { type: :integer, value: 3 },
+            { type: :multiply, value: '*' },
+            { type: :integer, value: 4 },
+            { type: :divide, value: '/' },
+            { type: :integer, value: 5 }
+          ]
         end
       end
     end

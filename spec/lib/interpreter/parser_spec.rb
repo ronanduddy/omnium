@@ -1,27 +1,26 @@
 # frozen_string_literal: true
 
 require 'interpreter/parser'
-require 'interpreter/token'
+require 'support/helpers/token'
 
 RSpec.describe Interpreter::Parser do
   subject(:parser) { described_class.new(tokens) }
-  let(:token_class) { Interpreter::Token }
 
   describe '#evaluate' do
     subject(:evaluate) { parser.evaluate }
 
     {
-      adding: { type: :plus, value: '+' },
-      subtracting: { type: :minus, value: '-' },
-      multipling: { type: :multiply, value: '*' },
-      dividing: { type: :divide, value: '/' }
+      addition: { type: :plus, value: '+' },
+      subtraction: { type: :minus, value: '-' },
+      multiplication: { type: :multiply, value: '*' },
+      division: { type: :divide, value: '/' }
     }.each do |operation, token|
-      context "when #{operation}" do
+      context "with #{operation}" do
         let(:tokens) do
           [
-            token_class.new(:integer, 9),
-            token_class.new(token[:type], token[:value]),
-            token_class.new(:integer, 3)
+            new_token(:integer, 9),
+            new_token(token[:type], token[:value]),
+            new_token(:integer, 3)
           ]
         end
 
@@ -34,9 +33,9 @@ RSpec.describe Interpreter::Parser do
     context 'with invalid tokens' do
       let(:tokens) do
         [
-          token_class.new(:invalid, 9),
-          token_class.new(:minus, '-'),
-          token_class.new(:integer, 3)
+          new_token(:invalid, 9),
+          new_token(:minus, '-'),
+          new_token(:integer, 3)
         ]
       end
 

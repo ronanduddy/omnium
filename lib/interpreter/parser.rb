@@ -21,6 +21,8 @@ module Interpreter
       { left: left.value, operator: operator.value, right: right.value }
     end
 
+    private
+
     def verify(current_token, token_type)
       case token_type
       when :operator
