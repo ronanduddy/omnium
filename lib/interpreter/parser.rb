@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Interpreter
+  # The parser will verify the format of a list of tokens.
   class Parser
     class ParserError < StandardError; end
 
@@ -9,34 +10,37 @@ module Interpreter
     end
 
     def evaluate
-      left = @tokens[0]
-      verify(left, :integer)
+      parts = []
 
-      operator = @tokens[1]
-      verify(operator, :operator)
+      @tokens.each_with_index do |token, index|
+        if index.even?
+          verify(token, :integer)
+        else
+          verify(token, :operator)
+        end
 
-      right = @tokens[2]
-      verify(right, :integer)
+        parts << token.value
+      end
 
-      { left: left.value, operator: operator.value, right: right.value }
+      parts
     end
 
     private
 
-    def verify(current_token, token_type)
-      case token_type
+    def verify(token, type)
+      case type
       when :operator
-        return if current_token.type == :plus ||
-                  current_token.type == :minus ||
-                  current_token.type == :multiply ||
-                  current_token.type == :divide
+        return if token.type == :plus ||
+                  token.type == :minus ||
+                  token.type == :multiply ||
+                  token.type == :divide
       when :integer
-        return if current_token.type == :integer
+        return if token.type == :integer
       when :eof
-        return if current_token.type == :eof
+        return if token.type == :eof
       end
 
-      error("Invalid token: #{current_token.str}")
+      error("Invalid token: #{token.str}")
     end
 
     def error(message)

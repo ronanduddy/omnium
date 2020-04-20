@@ -56,7 +56,7 @@ RSpec.describe Interpreter::Lexer do
       end
     end
 
-    context 'when string contains > two operands' do
+    context 'with arbitrary number of operands' do
       let(:string) { '1+2-3*4/5' }
 
       include_examples 'tokens' do

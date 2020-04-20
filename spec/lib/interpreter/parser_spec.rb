@@ -25,8 +25,24 @@ RSpec.describe Interpreter::Parser do
         end
 
         it 'returns the correct hash' do
-          is_expected.to eq({ left: 9, operator: token[:value], right: 3 })
+          is_expected.to eq [9, token[:value], 3]
         end
+      end
+    end
+
+    context 'with arbitrary number of tokens' do
+      let(:tokens) do
+        [
+          new_token(:integer, 9),
+          new_token(:minus, '-'),
+          new_token(:integer, 3),
+          new_token(:plus, '+'),
+          new_token(:integer, 1)
+        ]
+      end
+
+      it 'returns the correct hash' do
+        is_expected.to eq [9, '-', 3, '+', 1]
       end
     end
 

@@ -4,41 +4,31 @@ require 'interpreter/expression'
 
 RSpec.describe Interpreter::Expression do
   describe '#evaluate' do
-    subject(:evaluate) { described_class.new(args).evaluate }
-    let(:args) do
-      {
-        left: 9,
-        operator: operator,
-        right: 3
-      }
+    subject(:evaluate) { described_class.new(parts).evaluate }
+
+    {
+      addition: { operator: '+', result: 12 },
+      subtraction: { operator: '-', result: 6 },
+      multiplication: { operator: '*', result: 27 },
+      division: { operator: '/', result: 3 }
+    }.each do |operation, data|
+      context "when #{operation}" do
+        let(:parts) { [9, data[:operator], 3] }
+
+        it { is_expected.to eq data[:result] }
+      end
     end
 
-    context 'when addition' do
-      let(:operator) { '+' }
+    context 'with arbitrary number of parts' do
+      let(:parts) do
+        [1, '+', 2, '+', 3, '+', 4, '-', 5, '-', 6, '-', 7, '-', 8, '-', 9]
+      end
 
-      it { is_expected.to eq 12 }
-    end
-
-    context 'when subtraction' do
-      let(:operator) { '-' }
-
-      it { is_expected.to eq 6 }
-    end
-
-    context 'when multiplication' do
-      let(:operator) { '*' }
-
-      it { is_expected.to eq 27 }
-    end
-
-    context 'when division' do
-      let(:operator) { '/' }
-
-      it { is_expected.to eq 3 }
+      it { is_expected.to eq -25 }
     end
 
     context 'when invalid' do
-      let(:operator) { 'i' }
+      let(:parts) { [9, 'i', 3] }
 
       it { expect { evaluate }.to raise_error(described_class::OperatorError) }
     end

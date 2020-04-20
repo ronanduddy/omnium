@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module Interpreter
+  # A single place to represent operators and some sharable behaviour.
   module Operators
     PLUS = '+'
     MINUS = '-'

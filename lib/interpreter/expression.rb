@@ -1,20 +1,42 @@
 # frozen_string_literal: true
 
 module Interpreter
+  # Expressions are resolved here from a list of parts.
   class Expression
     require_relative 'operators'
     include Operators
 
     class OperatorError < StandardError; end
 
-    def initialize(args)
-      @left = args.fetch(:left)
-      @operator = args.fetch(:operator)
-      @right = args.fetch(:right)
+    def initialize(parts)
+      @parts = parts
+      @value = nil
+      @peeked_value = nil
     end
 
     def evaluate
-      case @operator
+      @value = @parts.first
+
+      @parts.each_with_index do |part, index|
+        next unless index.odd?
+
+        peek(index)
+        break if @peeked_value.nil?
+
+        calculate(part)
+      end
+
+      @value
+    end
+
+    private
+
+    def peek(index)
+      @peeked_value = @parts[index + 1]
+    end
+
+    def calculate(part)
+      case part
       when OPERATORS[:plus]
         add
       when OPERATORS[:minus]
@@ -24,26 +46,24 @@ module Interpreter
       when OPERATORS[:divide]
         divide
       else
-        error("Unsupported operator: #{@operator}")
+        error("Unsupported operator: #{part}")
       end
     end
 
-    private
-
     def add
-      @left + @right
+      @value += @peeked_value
     end
 
     def subtract
-      @left - @right
+      @value -= @peeked_value
     end
 
     def multipy
-      @left * @right
+      @value *= @peeked_value
     end
 
     def divide
-      @left / @right
+      @value /= @peeked_value
     end
 
     def error(message)
