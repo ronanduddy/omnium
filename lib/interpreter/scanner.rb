@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module Interpreter
-  # Provides scanning operations on a string.
+  # Provides scanning operations on a string. Note StringScanner could just be
+  # used from strscan rather than doing all this... but where would the fun be
+  # in that.
   class Scanner
     require_relative 'operators'
     include Operators
