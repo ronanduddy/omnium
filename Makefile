@@ -26,10 +26,10 @@ lint:
 irb:
 	$(docker_run) irb
 
-clear:
+stop:
 	@docker-compose down
 
 rmi:
 	@docker image rm $(app) || true
 
-reset: clear rmi build
+reset: stop rmi build
