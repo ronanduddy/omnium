@@ -34,7 +34,7 @@ module Interpreter
     end
 
     def token(string)
-      # could create a 'caster' class for this stuff
+      # could create a 'caster'/'typer' class for this stuff
       return Token.new(:integer, string.to_i) if string =~ /[0-9]/
       return Token.new(:plus, string) if plus?(string)
       return Token.new(:minus, string) if minus?(string)

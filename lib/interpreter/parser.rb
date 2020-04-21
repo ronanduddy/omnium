@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Interpreter
-  # The parser will verify the format of a list of tokens.
+  # The parser will verify the format of a list of tokens (syntax analysis).
   class Parser
     class ParserError < StandardError; end
 
