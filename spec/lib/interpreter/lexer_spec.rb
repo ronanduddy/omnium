@@ -29,11 +29,12 @@ RSpec.describe Interpreter::Lexer do
             let(:string) { format(template, l: 9, o: token[:value], r: 3) }
 
             include_examples 'tokens' do
-              let(:expected) do
+              let(:expected_tokens) do
                 [
                   { type: :integer, value: 9 },
                   { type: token[:type], value: token[:value] },
-                  { type: :integer, value: 3 }
+                  { type: :integer, value: 3 },
+                  { type: :eof, value: nil }
                 ]
               end
             end
@@ -43,11 +44,12 @@ RSpec.describe Interpreter::Lexer do
             let(:string) { format(template, l: 99, o: token[:value], r: 33) }
 
             include_examples 'tokens' do
-              let(:expected) do
+              let(:expected_tokens) do
                 [
                   { type: :integer, value: 99 },
                   { type: token[:type], value: token[:value] },
-                  { type: :integer, value: 33 }
+                  { type: :integer, value: 33 },
+                  { type: :eof, value: nil }
                 ]
               end
             end
@@ -60,7 +62,7 @@ RSpec.describe Interpreter::Lexer do
       let(:string) { '1+2-3*4/5' }
 
       include_examples 'tokens' do
-        let(:expected) do
+        let(:expected_tokens) do
           [
             { type: :integer, value: 1 },
             { type: :plus, value: '+' },
@@ -70,7 +72,8 @@ RSpec.describe Interpreter::Lexer do
             { type: :multiply, value: '*' },
             { type: :integer, value: 4 },
             { type: :divide, value: '/' },
-            { type: :integer, value: 5 }
+            { type: :integer, value: 5 },
+            { type: :eof, value: nil }
           ]
         end
       end

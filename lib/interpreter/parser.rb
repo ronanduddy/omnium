@@ -13,6 +13,8 @@ module Interpreter
       parts = []
 
       @tokens.each_with_index do |token, index|
+        break if token.type == :eof # hacky...
+
         if index.even?
           verify(token, :integer)
         else

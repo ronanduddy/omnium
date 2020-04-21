@@ -21,10 +21,10 @@ RSpec.describe Interpreter::Expression do
 
     context 'with arbitrary number of parts' do
       let(:parts) do
-        [1, '+', 2, '+', 3, '+', 4, '-', 5, '-', 6, '-', 7, '-', 8, '-', 9]
+        [100, '+', 2, '+', 3, '+', 4, '-', 55, '-', 6, '-', 7, '-', 8, '-', 9]
       end
 
-      it { is_expected.to eq -25 }
+      it { is_expected.to eq 24 }
     end
 
     context 'when invalid' do

@@ -26,9 +26,8 @@ module Interpreter
 
       loop do
         string = @scanner.next_word || @scanner.next_operator
-        break if @scanner.eos?
-
         tokens << token(string)
+        break if string.nil? # this should be thought out better
       end
 
       tokens

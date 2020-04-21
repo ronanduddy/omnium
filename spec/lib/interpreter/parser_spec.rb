@@ -20,7 +20,8 @@ RSpec.describe Interpreter::Parser do
           [
             new_token(:integer, 9),
             new_token(token[:type], token[:value]),
-            new_token(:integer, 3)
+            new_token(:integer, 3),
+            new_token(:eof, nil)
           ]
         end
 
@@ -37,7 +38,8 @@ RSpec.describe Interpreter::Parser do
           new_token(:minus, '-'),
           new_token(:integer, 3),
           new_token(:plus, '+'),
-          new_token(:integer, 1)
+          new_token(:integer, 1),
+          new_token(:eof, nil)
         ]
       end
 
@@ -51,7 +53,8 @@ RSpec.describe Interpreter::Parser do
         [
           new_token(:invalid, 9),
           new_token(:minus, '-'),
-          new_token(:integer, 3)
+          new_token(:integer, 3),
+          new_token(:eof, nil)
         ]
       end
 
