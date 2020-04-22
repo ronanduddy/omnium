@@ -1,29 +1,29 @@
 # frozen_string_literal: true
 
 module Interpreter
-  # Expressions are resolved here from a list of parts.
+  # Expressions are resolved here from a list of terms.
   class Expression
     require_relative 'operators'
     include Operators
 
     class OperatorError < StandardError; end
 
-    def initialize(parts)
-      @parts = parts
+    def initialize(terms)
+      @terms = terms
       @value = nil
       @peeked_value = nil
     end
 
     def evaluate
-      @value = @parts.first
+      @value = @terms.first
 
-      @parts.each_with_index do |part, index|
+      @terms.each_with_index do |term, index|
         next unless index.odd?
 
         peek(index)
         break if @peeked_value.nil?
 
-        calculate(part)
+        calculate(term)
       end
 
       @value
@@ -32,11 +32,11 @@ module Interpreter
     private
 
     def peek(index)
-      @peeked_value = @parts[index + 1]
+      @peeked_value = @terms[index + 1]
     end
 
-    def calculate(part)
-      case part
+    def calculate(term)
+      case term
       when OPERATORS[:plus]
         add
       when OPERATORS[:minus]
@@ -46,7 +46,7 @@ module Interpreter
       when OPERATORS[:divide]
         divide
       else
-        error("Unsupported operator: #{part}")
+        error("Unsupported operator: #{term}")
       end
     end
 

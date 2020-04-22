@@ -4,7 +4,7 @@ require 'interpreter/expression'
 
 RSpec.describe Interpreter::Expression do
   describe '#evaluate' do
-    subject(:evaluate) { described_class.new(parts).evaluate }
+    subject(:evaluate) { described_class.new(terms).evaluate }
 
     {
       addition: { operator: '+', result: 12 },
@@ -13,15 +13,15 @@ RSpec.describe Interpreter::Expression do
       division: { operator: '/', result: 3 }
     }.each do |operation, data|
       context "when #{operation}" do
-        let(:parts) { [9, data[:operator], 3] }
+        let(:terms) { [9, data[:operator], 3] }
 
         it { is_expected.to eq data[:result] }
       end
     end
 
-    context 'when arbitrary number of parts' do
+    context 'when arbitrary number of terms' do
       context 'with plus and minus' do
-        let(:parts) do
+        let(:terms) do
           [100, '+', 2, '+', 3, '+', 4, '-', 55, '-', 6, '-', 7, '-', 8, '-', 9]
         end
 
@@ -29,7 +29,7 @@ RSpec.describe Interpreter::Expression do
       end
 
       context 'with multiply and divide' do
-        let(:parts) do
+        let(:terms) do
           [7, '*', 4, '/', 2, '*', 3]
         end
 
@@ -38,7 +38,7 @@ RSpec.describe Interpreter::Expression do
     end
 
     context 'when invalid' do
-      let(:parts) { [9, 'i', 3] }
+      let(:terms) { [9, 'i', 3] }
 
       it { expect { evaluate }.to raise_error(described_class::OperatorError) }
     end

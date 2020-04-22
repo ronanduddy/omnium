@@ -2,7 +2,7 @@
 
 module Interpreter
   # The lexer (also called a tokeniser or scanner) is used to pull apart a string
-  # into its various tokens or parts; lexical analysis.
+  # into its various tokens or terms; lexical analysis.
   class Lexer
     require_relative 'scanner'
     require_relative 'token'

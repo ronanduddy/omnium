@@ -10,7 +10,7 @@ module Interpreter
     end
 
     def evaluate
-      parts = []
+      terms = []
 
       @tokens.each_with_index do |token, index|
         break if token.type == :eof # hacky...
@@ -21,10 +21,10 @@ module Interpreter
           verify(token, :operator)
         end
 
-        parts << token.value
+        terms << token.value
       end
 
-      parts
+      terms
     end
 
     private
