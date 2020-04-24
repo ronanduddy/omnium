@@ -6,16 +6,16 @@ require 'support/helpers/token'
 RSpec.describe Interpreter::Parser do
   subject(:parser) { described_class.new(tokens) }
 
-  describe '#evaluate' do
-    subject(:evaluate) { parser.evaluate }
+  describe '#parse' do
+    subject(:evaluate) { parser.parse }
 
     {
-      addition: { type: :plus, value: '+' },
-      subtraction: { type: :minus, value: '-' },
-      multiplication: { type: :multiply, value: '*' },
-      division: { type: :divide, value: '/' }
+      addition: { type: :plus, value: '+', result: 12 },
+      subtraction: { type: :minus, value: '-', result: 6 },
+      multiplication: { type: :multiply, value: '*', result: 27 },
+      division: { type: :divide, value: '/', result: 3 }
     }.each do |operation, token|
-      context "with #{operation}" do
+      context "when #{operation}" do
         let(:tokens) do
           [
             new_token(:integer, 9),
@@ -26,7 +26,7 @@ RSpec.describe Interpreter::Parser do
         end
 
         it 'returns the correct hash' do
-          is_expected.to eq [9, token[:value], 3]
+          is_expected.to eq token[:result]
         end
       end
     end
@@ -44,11 +44,11 @@ RSpec.describe Interpreter::Parser do
       end
 
       it 'returns the correct hash' do
-        is_expected.to eq [9, '-', 3, '+', 1]
+        is_expected.to eq 7
       end
     end
 
-    context 'with invalid tokens' do
+    context 'with an invalid token' do
       let(:tokens) do
         [
           new_token(:invalid, 9),

@@ -4,7 +4,6 @@
 require 'pry'
 require_relative 'interpreter/lexer'
 require_relative 'interpreter/parser'
-require_relative 'interpreter/expression'
 
 loop do
   begin
@@ -15,8 +14,7 @@ loop do
 
     lexer = Interpreter::Lexer.new(input)
     parser = Interpreter::Parser.new(lexer.tokens)
-    expression = Interpreter::Expression.new(parser.evaluate)
-    puts expression.evaluate
+    puts parser.parse
   rescue StandardError => e
     puts e.message
   end

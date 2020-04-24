@@ -8,35 +8,15 @@ module Interpreter
 
     class OperatorError < StandardError; end
 
-    def initialize(terms)
-      @terms = terms
-      @value = nil
-      @peeked_value = nil
+    def initialize(args)
+      # should think about defaults for these fetches.
+      @left = args.fetch(:left)
+      @operator = args.fetch(:operator)
+      @right = args.fetch(:right)
     end
 
     def evaluate
-      @value = @terms.first
-
-      @terms.each_with_index do |term, index|
-        next unless index.odd?
-
-        peek(index)
-        break if @peeked_value.nil?
-
-        calculate(term)
-      end
-
-      @value
-    end
-
-    private
-
-    def peek(index)
-      @peeked_value = @terms[index + 1]
-    end
-
-    def calculate(term)
-      case term
+      case @operator
       when OPERATORS[:plus]
         add
       when OPERATORS[:minus]
@@ -46,24 +26,26 @@ module Interpreter
       when OPERATORS[:divide]
         divide
       else
-        error("Unsupported operator: #{term}")
+        error("Unsupported operator: #{@operator}")
       end
     end
 
+    private
+
     def add
-      @value += @peeked_value
+      @left + @right
     end
 
     def subtract
-      @value -= @peeked_value
+      @left - @right
     end
 
     def multipy
-      @value *= @peeked_value
+      @left * @right
     end
 
     def divide
-      @value /= @peeked_value
+      @left / @right
     end
 
     def error(message)
