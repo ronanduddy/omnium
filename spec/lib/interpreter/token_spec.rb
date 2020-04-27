@@ -12,12 +12,6 @@ RSpec.describe Interpreter::Token do
     it { is_expected.to have_attributes(type: :integer, value: 4) }
   end
 
-  describe '#str' do
-    subject(:str) { token.str }
-
-    it { is_expected.to eq 'Token(integer, 4)' }
-  end
-
   describe '#operator?' do
     subject(:operator?) { token.operator? }
 
@@ -33,6 +27,24 @@ RSpec.describe Interpreter::Token do
       let(:value) { ']' }
 
       it { is_expected.to be false }
+    end
+  end
+
+  describe '#eof?' do
+    subject(:eof?) { token.eof? }
+
+    context 'when not eof token' do
+      let(:type) { :plus }
+      let(:value) { '+' }
+
+      it { is_expected.to be false }
+    end
+
+    context 'when eof token' do
+      let(:type) { :eof }
+      let(:value) { nil }
+
+      it { is_expected.to be true }
     end
   end
 end

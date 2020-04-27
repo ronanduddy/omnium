@@ -15,6 +15,8 @@ module Interpreter
     require_relative 'operators'
     include Operators
 
+    EOF = :eof
+
     attr_reader :type, :value
 
     def initialize(type, value)
@@ -22,12 +24,12 @@ module Interpreter
       @value = value
     end
 
-    def str
-      "Token(#{type}, #{value})"
-    end
-
     def operator?
       super(value)
+    end
+
+    def eof?
+      type == EOF # should this be centralised?
     end
   end
 end
