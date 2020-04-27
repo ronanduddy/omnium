@@ -59,10 +59,10 @@ RSpec.describe Interpreter::Scanner do
 
     context 'when word is within string bounds and including whitespace' do
       it 'advances `pointer` to be end of the word and returns the word' do
-        expect(scanner.next_word(false)).to eq 'Hello'
+        expect(scanner.next_word(skip_whitespace: false)).to eq 'Hello'
         expect(scanner.pointer).to eq 5
 
-        expect(scanner.next_word(false)).to be nil
+        expect(scanner.next_word(skip_whitespace: false)).to be nil
         expect(scanner.pointer).to eq 5
       end
     end

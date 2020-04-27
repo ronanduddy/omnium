@@ -15,25 +15,13 @@ module Interpreter
       @scanner = Scanner.new(string)
     end
 
-    def tokens
-      @tokens ||= tokenise
+    def next_token
+      tokenise(@scanner.next_word || @scanner.next_operator)
     end
 
     private
 
-    def tokenise
-      tokens = []
-
-      loop do
-        string = @scanner.next_word || @scanner.next_operator
-        tokens << token(string)
-        break if string.nil? # this should be thought out better
-      end
-
-      tokens
-    end
-
-    def token(string)
+    def tokenise(string)
       # could create a 'caster'/'typer' class for this stuff
       return Token.new(:integer, string.to_i) if string =~ /[0-9]/
       return Token.new(:plus, string) if plus?(string)

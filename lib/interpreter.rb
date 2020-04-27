@@ -13,7 +13,7 @@ loop do
     break if input == 'exit'
 
     lexer = Interpreter::Lexer.new(input)
-    parser = Interpreter::Parser.new(lexer.tokens)
+    parser = Interpreter::Parser.new(lexer)
     puts parser.parse
   rescue StandardError => e
     puts e.message

@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 require 'interpreter/lexer'
-require 'support/shared_examples/tokens'
+require 'support/matchers/token'
 
 RSpec.describe Interpreter::Lexer do
   subject(:lexer) { described_class.new(string) }
 
-  describe '#tokens' do
-    subject(:tokens) { lexer.tokens }
-
+  describe '#next_token' do
     {
       addition: { type: :plus, value: '+' },
       subtraction: { type: :minus, value: '-' },
@@ -28,30 +26,22 @@ RSpec.describe Interpreter::Lexer do
           context "with #{scenario} for single digit operation" do
             let(:string) { format(template, l: 9, o: token[:value], r: 3) }
 
-            include_examples 'tokens' do
-              let(:expected_tokens) do
-                [
-                  { type: :integer, value: 9 },
-                  { type: token[:type], value: token[:value] },
-                  { type: :integer, value: 3 },
-                  { type: :eof, value: nil }
-                ]
-              end
+            it 'returns the correct tokens' do
+              expect(lexer.next_token).to be_an_integer_token 9
+              expect(lexer.next_token).to be_a_token token[:type], token[:value]
+              expect(lexer.next_token).to be_an_integer_token 3
+              expect(lexer.next_token).to be_an_eof_token
             end
           end
 
           context "with #{scenario} for multiple digit operation" do
             let(:string) { format(template, l: 99, o: token[:value], r: 33) }
 
-            include_examples 'tokens' do
-              let(:expected_tokens) do
-                [
-                  { type: :integer, value: 99 },
-                  { type: token[:type], value: token[:value] },
-                  { type: :integer, value: 33 },
-                  { type: :eof, value: nil }
-                ]
-              end
+            it 'returns the correct tokens' do
+              expect(lexer.next_token).to be_an_integer_token 99
+              expect(lexer.next_token).to be_a_token token[:type], token[:value]
+              expect(lexer.next_token).to be_an_integer_token 33
+              expect(lexer.next_token).to be_an_eof_token
             end
           end
         end
@@ -61,21 +51,17 @@ RSpec.describe Interpreter::Lexer do
     context 'with arbitrary number of operands' do
       let(:string) { '1+2-3*4/5' }
 
-      include_examples 'tokens' do
-        let(:expected_tokens) do
-          [
-            { type: :integer, value: 1 },
-            { type: :plus, value: '+' },
-            { type: :integer, value: 2 },
-            { type: :minus, value: '-' },
-            { type: :integer, value: 3 },
-            { type: :multiply, value: '*' },
-            { type: :integer, value: 4 },
-            { type: :divide, value: '/' },
-            { type: :integer, value: 5 },
-            { type: :eof, value: nil }
-          ]
-        end
+      it 'returns the correct tokens' do
+        expect(lexer.next_token).to be_an_integer_token 1
+        expect(lexer.next_token).to be_a_plus_token
+        expect(lexer.next_token).to be_an_integer_token 2
+        expect(lexer.next_token).to be_a_minus_token
+        expect(lexer.next_token).to be_an_integer_token 3
+        expect(lexer.next_token).to be_a_multiply_token
+        expect(lexer.next_token).to be_an_integer_token 4
+        expect(lexer.next_token).to be_a_divide_token
+        expect(lexer.next_token).to be_an_integer_token 5
+        expect(lexer.next_token).to be_an_eof_token
       end
     end
   end

@@ -34,7 +34,7 @@ module Interpreter
       character
     end
 
-    def next_word(skip_whitespace = true)
+    def next_word(skip_whitespace: true)
       return nil if eos?
 
       next_whitespace if skip_whitespace
@@ -53,7 +53,7 @@ module Interpreter
       word.join
     end
 
-    def next_operator(skip_whitespace = true)
+    def next_operator(skip_whitespace: true)
       return nil if eos?
 
       next_whitespace if skip_whitespace
