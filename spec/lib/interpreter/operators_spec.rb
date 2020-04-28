@@ -69,6 +69,50 @@ RSpec.describe Interpreter::Operators do
     end
   end
 
+  describe '#plus_or_minus?' do
+    subject(:plus_or_minus?) { object.plus_or_minus?(character) }
+
+    context 'when plus' do
+      let(:character) { '+' }
+
+      it { is_expected.to be true }
+    end
+
+    context 'when minus' do
+      let(:character) { '-' }
+
+      it { is_expected.to be true }
+    end
+
+    context 'when invalid' do
+      let(:character) { ']' }
+
+      it { is_expected.to be false }
+    end
+  end
+
+  describe '#multiply_or_divide?' do
+    subject(:multiply_or_divide?) { object.multiply_or_divide?(character) }
+
+    context 'when multiply' do
+      let(:character) { '*' }
+
+      it { is_expected.to be true }
+    end
+
+    context 'when divide' do
+      let(:character) { '/' }
+
+      it { is_expected.to be true }
+    end
+
+    context 'when invalid' do
+      let(:character) { ']' }
+
+      it { is_expected.to be false }
+    end
+  end
+
   describe '#operator?' do
     subject(:operator?) { object.operator?(character) }
 

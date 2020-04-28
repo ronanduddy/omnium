@@ -36,17 +36,21 @@ RSpec.describe Interpreter::Parser do
       include_context 'lexer' do
         let(:tokens) do
           [
-            mocked_integer_token(9),
-            mocked_minus_token,
-            mocked_integer_token(3),
+            mocked_integer_token(14),
             mocked_plus_token,
-            mocked_integer_token(1),
+            mocked_integer_token(2),
+            mocked_multiply_token,
+            mocked_integer_token(3),
+            mocked_minus_token,
+            mocked_integer_token(6),
+            mocked_divide_token,
+            mocked_integer_token(2),
             mocked_eof_token
           ]
         end
       end
 
-      it { is_expected.to eq 7 }
+      it { is_expected.to eq 17 }
     end
 
     context 'with an invalid token' do

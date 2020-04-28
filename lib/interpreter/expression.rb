@@ -17,13 +17,13 @@ module Interpreter
 
     def evaluate
       case @operator
-      when OPERATORS[:plus]
+      when SYMBOLS[:plus]
         add
-      when OPERATORS[:minus]
+      when SYMBOLS[:minus]
         subtract
-      when OPERATORS[:multiply]
+      when SYMBOLS[:multiply]
         multipy
-      when OPERATORS[:divide]
+      when SYMBOLS[:divide]
         divide
       else
         error("Unsupported operator: #{@operator}")

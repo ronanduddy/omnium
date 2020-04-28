@@ -12,24 +12,11 @@ module Interpreter
   #   comment: line, block.
   # The value of a token can be thought of as a lexeme.
   class Token
-    require_relative 'operators'
-    include Operators
-
-    EOF = :eof
-
     attr_reader :type, :value
 
     def initialize(type, value)
       @type = type
       @value = value
-    end
-
-    def operator?
-      super(value)
-    end
-
-    def eof?
-      type == EOF # should this be centralised?
     end
   end
 end
