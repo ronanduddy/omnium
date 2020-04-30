@@ -16,7 +16,7 @@ module Interpreter
     end
 
     def next_token
-      tokenise(@scanner.next_word || @scanner.next_operator)
+      tokenise(@scanner.scan)
     end
 
     private

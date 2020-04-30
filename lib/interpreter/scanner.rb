@@ -17,85 +17,42 @@ module Interpreter
       @pointer = 0
     end
 
-    def reset
-      @pointer = 0
-    end
-
     def eos?
-      pointer > string.length - 1
+      @pointer > @string.length - 1
     end
 
-    #  these scan_* methods could be merged
-    def next_char
+    def scan
       return nil if eos?
 
-      character = string[pointer]
-      increment_pointer
-      character
-    end
+      advance while whitespace?
 
-    def next_word(skip_whitespace: true)
-      return nil if eos?
+      term = ''
+      (@pointer...@string.length).each do
+        break if whitespace?
 
-      next_whitespace if skip_whitespace
-
-      word = []
-      (pointer...string.length).each do |index|
-        character = string[index]
-        break if delimiter?(character)
-
-        increment_pointer
-        word << character
+        term += consume
       end
 
-      return nil if word.empty?
-
-      word.join
-    end
-
-    def next_operator(skip_whitespace: true)
-      return nil if eos?
-
-      next_whitespace if skip_whitespace
-      character = string[pointer]
-      return nil unless operator?(character)
-
-      increment_pointer
-      character
-    end
-
-    def next_whitespace
-      return nil if eos?
-
-      whitespaces = []
-
-      (pointer...string.length).each do |index|
-        character = string[index]
-        break nil unless whitespace?(character)
-
-        increment_pointer
-        whitespaces << character
-      end
-
-      return nil if whitespaces.empty?
-
-      whitespaces.join
+      term
     end
 
     private
 
-    def increment_pointer
+    def consume
+      char = character
+      advance
+      char
+    end
+
+    def advance
       @pointer += 1
     end
 
-    def delimiter?(character)
-      return true if operator?(character)
-      return true if whitespace?(character)
-
-      false
+    def character
+      @string[@pointer]
     end
 
-    def whitespace?(character)
+    def whitespace?
       WHITESPACE == character
     end
   end

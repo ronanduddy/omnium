@@ -3,7 +3,7 @@
 require 'support/helpers/lexer'
 
 RSpec.shared_context 'lexer' do
-  let(:lexer) { instance_double(Interpreter::Lexer) }
+  let(:lexer) { mocked_lexer }
 
   before do
     allow(lexer).to receive(:next_token).and_return(*tokens)
