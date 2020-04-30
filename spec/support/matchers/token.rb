@@ -38,6 +38,18 @@ RSpec::Matchers.define :be_a_divide_token do
   end
 end
 
+RSpec::Matchers.define :be_a_left_parenthesis_token do
+  match do |actual|
+    actual.type == :left_parenthesis && actual.value == '('
+  end
+end
+
+RSpec::Matchers.define :be_a_right_parenthesis_token do
+  match do |actual|
+    actual.type == :right_parenthesis && actual.value == ')'
+  end
+end
+
 RSpec::Matchers.define :be_an_eof_token do
   match do |actual|
     actual.type == :eof && actual.value.nil?

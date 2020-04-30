@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Interpreter
-  # The parser will verify the format of a list of tokens (syntax analysis).
+  # The parser will verify the format of a list of tokens (syntax analysis) by
+  # 'recursive-descent'.
   class Parser
     PLUS = :plus
     MINUS = :minus
@@ -48,28 +49,36 @@ module Interpreter
     end
 
     def multiply_divide
-      # multiply_divide : number ((MULTIPLY | DIVIDE) number)*
-      result = number
+      # multiply_divide : number_parentheses ((MULTIPLY | DIVIDE) number_parentheses)*
+      result = number_parentheses
 
       while @token.type == MULTIPLY || @token.type == DIVIDE
         if @token.type == MULTIPLY
           consume(MULTIPLY)
-          result *= number
+          result *= number_parentheses
         elsif @token.type == DIVIDE
           consume(DIVIDE)
-          result /= number
+          result /= number_parentheses
         end
       end
 
       result
     end
 
-    def number
-      # number : INTEGER
-      token = @token
-      consume(INTEGER)
+    def number_parentheses
+      # number_parentheses : INTEGER | LEFT_PARENTHESIS plus_minus RIGHT_PARENTHESIS
+      result = 0
 
-      token.value
+      if @token.type == INTEGER
+        consume(INTEGER)
+        result = @token.value
+      elsif
+        consume(LEFT_PARENTHESIS)
+        result = plus_minus
+        consume(RIGHT_PARENTHESIS)
+      end
+
+      result
     end
 
     def consume(type)
@@ -90,6 +99,10 @@ module Interpreter
         return if @token.type == DIVIDE
       when INTEGER
         return if @token.type == INTEGER
+      when LEFT_PARENTHESIS
+        return if @token.type == LEFT_PARENTHESIS
+      when RIGHT_PARENTHESIS
+        return if @token.type == RIGHT_PARENTHESIS
       when EOF
         return if @token.eof?
       else

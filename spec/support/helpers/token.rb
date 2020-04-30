@@ -28,6 +28,14 @@ module Helpers
       instance_double(Interpreter::Token, type: :divide, value: '/')
     end
 
+    def mocked_left_parenthesis_token
+      instance_double(Interpreter::Token, type: :left_parenthesis, value: '(')
+    end
+
+    def mocked_right_parenthesis_token
+      instance_double(Interpreter::Token, type: :right_parenthesis, value: ')')
+    end
+
     def mocked_eof_token
       instance_double(Interpreter::Token, type: :eof, value: nil)
     end

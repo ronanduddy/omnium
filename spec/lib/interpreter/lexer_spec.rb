@@ -43,6 +43,33 @@ RSpec.describe Interpreter::Lexer do
       end
     end
 
+    context 'using parentheses' do
+      let(:text) { '7 + 3 * (10 / (12 / (3 + 1) - 1))' }
+
+      it 'returns the correct tokens' do
+        expect(lexer.next_token).to be_an_integer_token 7
+        expect(lexer.next_token).to be_a_plus_token
+        expect(lexer.next_token).to be_an_integer_token 3
+        expect(lexer.next_token).to be_a_multiply_token
+        expect(lexer.next_token).to be_a_left_parenthesis_token
+        expect(lexer.next_token).to be_an_integer_token 10
+        expect(lexer.next_token).to be_a_divide_token
+        expect(lexer.next_token).to be_a_left_parenthesis_token
+        expect(lexer.next_token).to be_an_integer_token 12
+        expect(lexer.next_token).to be_a_divide_token
+        expect(lexer.next_token).to be_a_left_parenthesis_token
+        expect(lexer.next_token).to be_an_integer_token 3
+        expect(lexer.next_token).to be_a_plus_token
+        expect(lexer.next_token).to be_an_integer_token 1
+        expect(lexer.next_token).to be_a_right_parenthesis_token
+        expect(lexer.next_token).to be_a_minus_token
+        expect(lexer.next_token).to be_an_integer_token 1
+        expect(lexer.next_token).to be_a_right_parenthesis_token
+        expect(lexer.next_token).to be_a_right_parenthesis_token
+        expect(lexer.next_token).to be_an_eof_token
+      end
+    end
+
     context 'with invalid text' do
       let(:text) { 'invalid' }
 
