@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
+# frozen_text_literal: true
+
 module Interpreter
-  # The lexer returns tokens for a given string.
+  # The lexer returns tokens for a given text.
   class Lexer
     require_relative 'token'
 
@@ -10,56 +12,31 @@ module Interpreter
     MINUS = '-'
     MULTIPLY = '*'
     DIVIDE = '/'
+    INTEGER = /[0-9]/.freeze
     LEFT_PARENTHESIS = '('
     RIGHT_PARENTHESIS = ')'
 
     class LexerError < StandardError; end
 
-    def initialize(string)
-      @string = string
+    def initialize(text)
+      @text = text
       @pointer = 0
     end
 
     def next_token
-      value = scan
+      return token(:eof, nil) if eos?
 
-      return Token.new(:integer, value.to_i) if value =~ /[0-9]/
-      return Token.new(:plus, value) if value == PLUS
-      return Token.new(:minus, value) if value == MINUS
-      return Token.new(:multiply, value) if value == MULTIPLY
-      return Token.new(:divide, value) if value == DIVIDE
-      return Token.new(:left_parenthesis, value) if value == LEFT_PARENTHESIS
-      return Token.new(:right_parenthesis, value) if value == RIGHT_PARENTHESIS
-      return Token.new(:eof, nil) if eos?
+      advance while whitespace?
 
-      raise(LexerError, "Error tokenising #{value}")
+      (@pointer...@text.length).each do
+        return tokenise
+      end
     end
 
     private
 
     def eos?
-      @pointer > @string.length - 1
-    end
-
-    def scan
-      return nil if eos?
-
-      advance while whitespace?
-
-      term = ''
-      (@pointer...@string.length).each do
-        break if whitespace?
-
-        term += consume
-      end
-
-      term
-    end
-
-    def consume
-      char = character
-      advance
-      char
+      @pointer > @text.length - 1
     end
 
     def advance
@@ -67,11 +44,53 @@ module Interpreter
     end
 
     def character
-      @string[@pointer]
+      @text[@pointer]
     end
 
     def whitespace?
       WHITESPACE == character
+    end
+
+    def integer
+      result = ''
+
+      while character =~ INTEGER
+        result += character
+        advance
+      end
+
+      result.to_i
+    end
+
+    def token(type, value)
+      Token.new(type, value)
+    end
+
+    def tokenise
+      case character
+      when INTEGER
+        token(:integer, integer)
+      when PLUS
+        advance
+        token(:plus, PLUS)
+      when MINUS
+        advance
+        token(:minus, MINUS)
+      when MULTIPLY
+        advance
+        token(:multiply, MULTIPLY)
+      when DIVIDE
+        advance
+        token(:divide, DIVIDE)
+      when LEFT_PARENTHESIS
+        advance
+        token(:left_parenthesis, LEFT_PARENTHESIS)
+      when RIGHT_PARENTHESIS
+        advance
+        token(:right_parenthesis, RIGHT_PARENTHESIS)
+      else
+        raise(LexerError, "Error tokenising #{character}")
+      end
     end
   end
 end
