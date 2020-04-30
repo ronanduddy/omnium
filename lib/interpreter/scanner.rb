@@ -5,9 +5,6 @@ module Interpreter
   # used from strscan rather than doing all this... but where would the fun be
   # in that.
   class Scanner
-    require_relative 'operators'
-    include Operators
-
     WHITESPACE = ' '
 
     attr_accessor :string, :pointer

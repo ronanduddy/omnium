@@ -13,7 +13,7 @@ module Helpers
     end
 
     def mocked_plus_token
-      instance_double(Interpreter::Token, type: :minus, value: '+')
+      instance_double(Interpreter::Token, type: :plus, value: '+')
     end
 
     def mocked_minus_token

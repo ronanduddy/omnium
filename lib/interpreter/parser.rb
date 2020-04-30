@@ -3,16 +3,12 @@
 module Interpreter
   # The parser will verify the format of a list of tokens (syntax analysis).
   class Parser
-    require_relative 'expression'
-
     PLUS = :plus
     MINUS = :minus
     MULTIPLY = :multiply
     DIVIDE = :divide
     INTEGER = :integer
     EOF = :eof
-    PLUS_OR_MINUS = :plus_or_minus
-    MULTIPLY_OR_DIVIDE = :multiply_or_divide
 
     class ParserError < StandardError; end
 
@@ -36,10 +32,14 @@ module Interpreter
       # plus_minus : multiply_divide ((PLUS | MINUS) multiply_divide)*
       result = multiply_divide
 
-      while plus_or_minus?
-        operator = @token
-        consume(PLUS_OR_MINUS)
-        result = expression(result, operator.value, multiply_divide)
+      while @token.type == PLUS || @token.type == MINUS
+        if @token.type == PLUS
+          consume(PLUS)
+          result += multiply_divide
+        elsif @token.type == MINUS
+          consume(MINUS)
+          result -= multiply_divide
+        end
       end
 
       result
@@ -49,10 +49,14 @@ module Interpreter
       # multiply_divide : number ((MULTIPLY | DIVIDE) number)*
       result = number
 
-      while multiply_or_divide?
-        operator = @token
-        consume(MULTIPLY_OR_DIVIDE)
-        result = expression(result, operator.value, number)
+      while @token.type == MULTIPLY || @token.type == DIVIDE
+        if @token.type == MULTIPLY
+          consume(MULTIPLY)
+          result *= number
+        elsif @token.type == DIVIDE
+          consume(DIVIDE)
+          result /= number
+        end
       end
 
       result
@@ -72,42 +76,23 @@ module Interpreter
       @token = @lexer.next_token
     end
 
-    def expression(left, operator, right)
-      Interpreter::Expression.new(
-        { left: left, operator: operator, right: right }
-      ).evaluate
-    end
-
     def verify(type)
-      # could thise exist in a verifier/type checker class?
       case type
-      when PLUS_OR_MINUS
-        return if plus_or_minus?
-      when MULTIPLY_OR_DIVIDE
-        return if multiply_or_divide?
+      when PLUS
+        return if @token.type == PLUS
+      when MINUS
+        return if @token.type == MINUS
+      when MULTIPLY
+        return if @token.type == MULTIPLY
+      when DIVIDE
+        return if @token.type == DIVIDE
       when INTEGER
-        return if integer?
+        return if @token.type == INTEGER
       when EOF
         return if @token.eof?
+      else
+        raise(ParserError, "Invalid token: #{@token.inspect}")
       end
-
-      error("Invalid token: #{@token.inspect}")
-    end
-
-    def plus_or_minus?
-      @token.type == PLUS || @token.type == MINUS
-    end
-
-    def multiply_or_divide?
-      @token.type == MULTIPLY || @token.type == DIVIDE
-    end
-
-    def integer?
-      @token.type == INTEGER
-    end
-
-    def error(message)
-      raise(ParserError, message)
     end
   end
 end

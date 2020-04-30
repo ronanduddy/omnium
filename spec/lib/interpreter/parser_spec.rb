@@ -52,13 +52,5 @@ RSpec.describe Interpreter::Parser do
 
       it { is_expected.to eq 17 }
     end
-
-    context 'with an invalid token' do
-      include_context 'lexer' do
-        let(:tokens) { [mocked_token(:invalid, 9)] }
-      end
-
-      it { expect { parse }.to raise_error described_class::ParserError }
-    end
   end
 end
