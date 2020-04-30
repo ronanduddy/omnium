@@ -8,6 +8,8 @@ module Interpreter
     MULTIPLY = :multiply
     DIVIDE = :divide
     INTEGER = :integer
+    LEFT_PARENTHESIS = :left_parenthesis
+    RIGHT_PARENTHESIS = :right_parenthesis
     EOF = :eof
 
     class ParserError < StandardError; end
