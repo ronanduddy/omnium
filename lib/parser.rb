@@ -66,11 +66,12 @@ class Parser
 
   def number_parentheses
     # number_parentheses : INTEGER | LEFT_PARENTHESIS plus_minus RIGHT_PARENTHESIS
+    token = @token
     result = 0
 
-    if @token.type == INTEGER
+    if token.type == INTEGER
       consume(INTEGER)
-      result = @token.value
+      result = token.value
     elsif
       consume(LEFT_PARENTHESIS)
       result = plus_minus
