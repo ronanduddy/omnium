@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'interpreter/token'
+require 'token'
 
-RSpec.describe Interpreter::Token do
+RSpec.describe Token do
   subject(:token) { described_class.new(type, value) }
 
   let(:type) { :integer }

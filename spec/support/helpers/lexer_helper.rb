@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require 'interpreter/lexer'
+require 'lexer'
 
 module Helpers
-  module Lexer
+  module LexerHelper
     def mocked_lexer
-      instance_double(Interpreter::Lexer)
+      instance_double(Lexer)
     end
   end
 end
 
 RSpec.configure do |config|
-  config.include Helpers::Lexer
+  config.include Helpers::LexerHelper
 end

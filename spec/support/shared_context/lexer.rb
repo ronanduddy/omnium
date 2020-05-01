@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'support/helpers/lexer'
+require 'support/helpers/lexer_helper'
 
 RSpec.shared_context 'lexer' do
   let(:lexer) { mocked_lexer }

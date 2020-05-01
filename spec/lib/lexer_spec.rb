@@ -2,10 +2,10 @@
 
 # frozen_text_literal: true
 
-require 'interpreter/lexer'
+require 'lexer'
 require 'support/matchers/token'
 
-RSpec.describe Interpreter::Lexer do
+RSpec.describe Lexer do
   subject(:lexer) { described_class.new(text) }
 
   describe '#next_token' do

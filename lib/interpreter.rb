@@ -1,9 +1,11 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+$LOAD_PATH << './lib'
+
 require 'pry'
-require_relative 'interpreter/lexer'
-require_relative 'interpreter/parser'
+require 'lexer'
+require 'parser'
 
 loop do
   begin
@@ -12,8 +14,8 @@ loop do
 
     break if input == 'exit'
 
-    lexer = Interpreter::Lexer.new(input)
-    parser = Interpreter::Parser.new(lexer)
+    lexer = Lexer.new(input)
+    parser = Parser.new(lexer)
     puts parser.parse
   rescue StandardError => e
     puts e.message

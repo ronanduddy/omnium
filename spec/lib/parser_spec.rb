@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'interpreter/parser'
-require 'support/helpers/token'
+require 'parser'
+require 'support/helpers/token_helper'
 require 'support/shared_context/lexer'
 
-RSpec.describe Interpreter::Parser do
+RSpec.describe Parser do
   subject(:parser) { described_class.new(lexer) }
 
   describe '#parse' do
