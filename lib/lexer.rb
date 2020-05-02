@@ -2,10 +2,10 @@
 
 # frozen_text_literal: true
 
+require_relative 'token'
+
 # The lexer returns tokens for a given text.
 class Lexer
-  require_relative 'token'
-
   WHITESPACE = ' '
   PLUS = '+'
   MINUS = '-'
