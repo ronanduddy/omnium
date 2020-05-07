@@ -4,40 +4,40 @@ require 'token'
 
 module Helpers
   module TokenHelper
-    def mocked_token(type, value)
-      instance_double(Token, type: type, value: value)
+    def token(type, value)
+      Token.new(type, value)
     end
 
-    def mocked_integer_token(value)
-      instance_double(Token, type: :integer, value: value)
+    def integer_token(value)
+      Token.new(:integer, value)
     end
 
-    def mocked_plus_token
-      instance_double(Token, type: :plus, value: '+')
+    def plus_token
+      Token.new(:plus, '+')
     end
 
-    def mocked_minus_token
-      instance_double(Token, type: :minus, value: '-')
+    def minus_token
+      Token.new(:minus, '-')
     end
 
-    def mocked_multiply_token
-      instance_double(Token, type: :multiply, value: '*')
+    def multiply_token
+      Token.new(:multiply, '*')
     end
 
-    def mocked_divide_token
-      instance_double(Token, type: :divide, value: '/')
+    def divide_token
+      Token.new(:divide, '/')
     end
 
-    def mocked_left_parenthesis_token
-      instance_double(Token, type: :left_parenthesis, value: '(')
+    def left_parenthesis_token
+      Token.new(:left_parenthesis, '(')
     end
 
-    def mocked_right_parenthesis_token
-      instance_double(Token, type: :right_parenthesis, value: ')')
+    def right_parenthesis_token
+      Token.new(:right_parenthesis, ')')
     end
 
-    def mocked_eof_token
-      instance_double(Token, type: :eof, value: nil)
+    def eof_token
+      Token.new(:eof, nil)
     end
   end
 end

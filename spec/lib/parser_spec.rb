@@ -1,65 +1,76 @@
 # frozen_string_literal: true
 
 require 'parser'
+require 'support/helpers/lexer_helper'
 require 'support/helpers/token_helper'
-require 'support/shared_context/lexer'
+require 'support/helpers/number_helper'
+require 'support/helpers/binary_operator_helper'
+require 'support/matchers/ast'
 
 RSpec.describe Parser do
-  subject(:parser) { described_class.new(lexer) }
+  subject(:parser) { described_class.new(lexer(input)) }
 
   describe '#parse' do
     subject(:parse) { parser.parse }
 
     context 'without parentheses' do
-      include_context 'lexer' do
-        let(:tokens) do
-          [
-            mocked_integer_token(14),
-            mocked_plus_token,
-            mocked_integer_token(2),
-            mocked_multiply_token,
-            mocked_integer_token(3),
-            mocked_minus_token,
-            mocked_integer_token(6),
-            mocked_divide_token,
-            mocked_integer_token(2),
-            mocked_eof_token
-          ]
-        end
+      let(:input) { '14 + 2 * 3 - 6 / 2' }
+
+      let(:tree) do
+        binary_operator_node(
+          left: binary_operator_node(
+            left: number_node(integer_token(14)),
+            operator: plus_token,
+            right: binary_operator_node(
+              left: number_node(integer_token(2)),
+              operator: multiply_token,
+              right: number_node(integer_token(3))
+            )
+          ),
+          operator: minus_token,
+          right: binary_operator_node(
+            left: number_node(integer_token(6)),
+            operator: divide_token,
+            right: number_node(integer_token(2))
+          )
+        )
       end
 
-      it { is_expected.to eq 17 }
+      it { is_expected.to be_an_ast tree }
     end
 
     context 'with parentheses' do
-      include_context 'lexer' do
-        let(:tokens) do
-          [
-            mocked_integer_token(7),
-            mocked_plus_token,
-            mocked_integer_token(3),
-            mocked_multiply_token,
-            mocked_left_parenthesis_token,
-            mocked_integer_token(10),
-            mocked_divide_token,
-            mocked_left_parenthesis_token,
-            mocked_integer_token(12),
-            mocked_divide_token,
-            mocked_left_parenthesis_token,
-            mocked_integer_token(3),
-            mocked_plus_token,
-            mocked_integer_token(1),
-            mocked_right_parenthesis_token,
-            mocked_minus_token,
-            mocked_integer_token(1),
-            mocked_right_parenthesis_token,
-            mocked_right_parenthesis_token,
-            mocked_eof_token
-          ]
-        end
+      let(:input) { '7 + 3 * (10 / (12 / (3 + 1) - 1))' }
+
+      let(:tree) do
+        binary_operator_node(
+          left: number_node(integer_token(7)),
+          operator: plus_token,
+          right: binary_operator_node(
+            left: number_node(integer_token(3)),
+            operator: multiply_token,
+            right: binary_operator_node(
+              left: number_node(integer_token(10)),
+              operator: divide_token,
+              right: binary_operator_node(
+                left: binary_operator_node(
+                  left: number_node(integer_token(12)),
+                  operator: divide_token,
+                  right: binary_operator_node(
+                    left: number_node(integer_token(3)),
+                    operator: plus_token,
+                    right: number_node(integer_token(1))
+                  )
+                ),
+                operator: minus_token,
+                right: number_node(integer_token(1))
+              )
+            )
+          )
+        )
       end
 
-      it { is_expected.to eq 22 }
+      it { is_expected.to be_an_ast tree }
     end
   end
 end

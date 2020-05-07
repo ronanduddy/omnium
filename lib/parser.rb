@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative 'number'
+require_relative 'binary_operator'
+
 # The parser will verify the format of a list of tokens (syntax analysis) by
 # 'recursive-descent'.
 class Parser
@@ -32,53 +35,55 @@ class Parser
 
   def plus_minus
     # plus_minus : multiply_divide ((PLUS | MINUS) multiply_divide)*
-    result = multiply_divide
+    node = multiply_divide
 
     while @token.type == PLUS || @token.type == MINUS
+      token = @token
       if @token.type == PLUS
         consume(PLUS)
-        result += multiply_divide
       elsif @token.type == MINUS
         consume(MINUS)
-        result -= multiply_divide
       end
+
+      node = BinaryOperator.new(node, token, multiply_divide)
     end
 
-    result
+    node
   end
 
   def multiply_divide
     # multiply_divide : number_parentheses ((MULTIPLY | DIVIDE) number_parentheses)*
-    result = number_parentheses
+    node = number_parentheses
 
     while @token.type == MULTIPLY || @token.type == DIVIDE
+      token = @token
       if @token.type == MULTIPLY
         consume(MULTIPLY)
-        result *= number_parentheses
       elsif @token.type == DIVIDE
         consume(DIVIDE)
-        result /= number_parentheses
       end
+
+      node = BinaryOperator.new(node, token, number_parentheses)
     end
 
-    result
+    node
   end
 
   def number_parentheses
     # number_parentheses : INTEGER | LEFT_PARENTHESIS plus_minus RIGHT_PARENTHESIS
     token = @token
-    result = 0
+    node = nil # I don't think this should be nil
 
     if token.type == INTEGER
       consume(INTEGER)
-      result = token.value
-    elsif
+      node = Number.new(token)
+    elsif token.type == LEFT_PARENTHESIS
       consume(LEFT_PARENTHESIS)
-      result = plus_minus
+      node = plus_minus
       consume(RIGHT_PARENTHESIS)
     end
 
-    result
+    node
   end
 
   def consume(type)

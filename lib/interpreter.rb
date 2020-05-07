@@ -1,23 +1,42 @@
-#!/usr/bin/env ruby
 # frozen_string_literal: true
 
-$LOAD_PATH << './lib'
+require_relative 'node_visitor'
 
-require 'pry'
-require 'lexer'
-require 'parser'
+# The visitor pattern is used to traverse the AST. This class may be thought of
+# as a 'tree visitor'.
+class Interpreter < NodeVisitor
+  PLUS = :plus
+  MINUS = :minus
+  MULTIPLY = :multiply
+  DIVIDE = :divide
 
-loop do
-  begin
-    print 'calc> '
-    input = gets.chomp
+  def initialize(parser)
+    @parser = parser
+  end
 
-    break if input == 'exit'
+  def interpret
+    tree = @parser.parse
+    visit(tree)
+  end
 
-    lexer = Lexer.new(input)
-    parser = Parser.new(lexer)
-    puts parser.parse
-  rescue StandardError => e
-    puts e.message
+  # concrete visitor operations below
+
+  def visit_Number(node)
+    node.value
+  end
+
+  def visit_BinaryOperator(node)
+    case node.operator.type
+    when PLUS
+      visit(node.left) + visit(node.right)
+    when MINUS
+      visit(node.left) - visit(node.right)
+    when MULTIPLY
+      visit(node.left) * visit(node.right)
+    when DIVIDE
+      visit(node.left) / visit(node.right)
+    else
+      # something here...
+    end
   end
 end

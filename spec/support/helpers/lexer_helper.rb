@@ -4,8 +4,8 @@ require 'lexer'
 
 module Helpers
   module LexerHelper
-    def mocked_lexer
-      instance_double(Lexer)
+    def lexer(input)
+      Lexer.new(input)
     end
   end
 end
