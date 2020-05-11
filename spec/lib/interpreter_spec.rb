@@ -4,6 +4,7 @@ require 'interpreter'
 require 'parser'
 require 'support/helpers/token_helper'
 require 'support/helpers/number_helper'
+require 'support/helpers/unary_operator_helper'
 require 'support/helpers/binary_operator_helper'
 
 RSpec.describe Interpreter do
@@ -42,6 +43,26 @@ RSpec.describe Interpreter do
     let(:node) { number_node(integer_token(2)) }
 
     it { is_expected.to eq 2 }
+  end
+
+  describe '#visit_UnaryOperator' do
+    subject(:visit_UnaryOperator) { interpreter.visit_UnaryOperator(node) }
+
+    # ---3 = -3
+    let(:node) do
+      unary_operator_node(
+        operator: minus_token,
+        operand: unary_operator_node(
+          operator: minus_token,
+          operand: unary_operator_node(
+            operator: minus_token,
+            operand: number_node(integer_token(3))
+          )
+        )
+      )
+    end
+
+    it { is_expected.to eq -3 }
   end
 
   describe '#visit_BinaryOperator' do

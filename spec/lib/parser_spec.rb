@@ -4,6 +4,7 @@ require 'parser'
 require 'support/helpers/lexer_helper'
 require 'support/helpers/token_helper'
 require 'support/helpers/number_helper'
+require 'support/helpers/unary_operator_helper'
 require 'support/helpers/binary_operator_helper'
 require 'support/matchers/ast'
 
@@ -12,6 +13,65 @@ RSpec.describe Parser do
 
   describe '#parse' do
     subject(:parse) { parser.parse }
+
+    context 'when unary operator' do
+      context 'with no parentheses' do
+        let(:input) { '5 - - - 2' }
+
+        let(:tree) do
+          binary_operator_node(
+            left: number_node(integer_token(5)),
+            operator: minus_token,
+            right: unary_operator_node(
+              operator: minus_token,
+              operand: unary_operator_node(
+                operator: minus_token,
+                operand: number_node(integer_token(2))
+              )
+            )
+          )
+        end
+
+        it { is_expected.to be_an_ast tree }
+      end
+
+      context 'with parentheses' do
+        let(:input) { '5 - - - + - (3 + 4) - +2' }
+
+        let(:tree) do
+          binary_operator_node(
+            left: binary_operator_node(
+              left: number_node(integer_token(5)),
+              operator: minus_token,
+              right: unary_operator_node(
+                operator: minus_token,
+                operand: unary_operator_node(
+                  operator: minus_token,
+                  operand: unary_operator_node(
+                    operator: plus_token,
+                    operand: unary_operator_node(
+                      operator: minus_token,
+                      operand: binary_operator_node(
+                        left: number_node(integer_token(3)),
+                        operator: plus_token,
+                        right: number_node(integer_token(4))
+                      )
+                    )
+                  )
+                )
+              )
+            ),
+            operator: minus_token,
+            right: unary_operator_node(
+              operator: plus_token,
+              operand: number_node(integer_token(2))
+            )
+          )
+        end
+
+        it { is_expected.to be_an_ast tree }
+      end
+    end
 
     context 'without parentheses' do
       let(:input) { '14 + 2 * 3 - 6 / 2' }

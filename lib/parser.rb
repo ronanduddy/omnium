@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'number'
+require_relative 'unary_operator'
 require_relative 'binary_operator'
 
 # The parser will verify the format of a list of tokens (syntax analysis) by
@@ -70,11 +71,19 @@ class Parser
   end
 
   def number_parentheses
-    # number_parentheses : INTEGER | LEFT_PARENTHESIS plus_minus RIGHT_PARENTHESIS
+    # number_parentheses : (PLUS | MINUS) number_parentheses | INTEGER | LEFT_PARENTHESIS plus_minus RIGHT_PARENTHESIS
     token = @token
-    node = nil # I don't think this should be nil
+    node = nil # I don't think this should be nil; mirroring other methods for consistency. Should return early instead.
 
-    if token.type == INTEGER
+    if token.type == PLUS
+      operator = token
+      consume(PLUS)
+      node = UnaryOperator.new(operator, number_parentheses)
+    elsif token.type == MINUS
+      operator = token
+      consume(MINUS)
+      node = UnaryOperator.new(operator, number_parentheses)
+    elsif token.type == INTEGER
       consume(INTEGER)
       node = Number.new(token)
     elsif token.type == LEFT_PARENTHESIS

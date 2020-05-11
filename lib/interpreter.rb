@@ -25,6 +25,15 @@ class Interpreter < NodeVisitor
     node.value
   end
 
+  def visit_UnaryOperator(node)
+    case node.operator.type
+    when PLUS
+      +visit(node.operand)
+    when MINUS
+      -visit(node.operand)
+    end
+  end
+
   def visit_BinaryOperator(node)
     case node.operator.type
     when PLUS
