@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'binary_operator'
+require 'parser/ast/binary_operator'
 require 'support/helpers/token_helper'
 
-RSpec.describe BinaryOperator do
+RSpec.describe Parser::AST::BinaryOperator do
   subject(:binary_operator) { described_class.new(left, operator, right) }
 
   let(:left) { integer_token(2) }

@@ -3,14 +3,12 @@
 require 'interpreter'
 require 'parser'
 require 'support/helpers/token_helper'
-require 'support/helpers/number_helper'
-require 'support/helpers/unary_operator_helper'
-require 'support/helpers/binary_operator_helper'
+require 'support/helpers/ast_node_helpers'
 
 RSpec.describe Interpreter do
   subject(:interpreter) { described_class.new(parser) }
 
-  let(:parser) { instance_double(Parser, parse: tree) }
+  let(:parser) { instance_double(Parser::Core, parse: tree) }
   let(:tree) do
     binary_operator_node(
       left: binary_operator_node(

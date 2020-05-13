@@ -2,8 +2,7 @@
 
 require 'node_visitor'
 require 'support/helpers/token_helper'
-require 'support/helpers/number_helper'
-require 'support/helpers/binary_operator_helper'
+require 'support/helpers/ast_node_helpers'
 
 RSpec.describe NodeVisitor do
   subject(:node_visitor) { described_class.new }

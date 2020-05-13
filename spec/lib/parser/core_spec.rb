@@ -3,12 +3,10 @@
 require 'parser'
 require 'support/helpers/lexer_helper'
 require 'support/helpers/token_helper'
-require 'support/helpers/number_helper'
-require 'support/helpers/unary_operator_helper'
-require 'support/helpers/binary_operator_helper'
+require 'support/helpers/ast_node_helpers'
 require 'support/matchers/ast'
 
-RSpec.describe Parser do
+RSpec.describe Parser::Core do
   subject(:parser) { described_class.new(lexer(input)) }
 
   describe '#parse' do
