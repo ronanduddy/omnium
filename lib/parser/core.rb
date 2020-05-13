@@ -23,19 +23,15 @@ module Parser
     end
 
     def parse
-      arithmetic
+      @token = @lexer.next_token
+      expr
     end
 
     private
 
-    def arithmetic
-      @token = @lexer.next_token
-      plus_minus
-    end
-
-    def plus_minus
-      # plus_minus : multiply_divide ((PLUS | MINUS) multiply_divide)*
-      node = multiply_divide
+    def expr
+      # expr : term ((PLUS | MINUS) term)*
+      node = term
 
       while @token.type == PLUS || @token.type == MINUS
         token = @token
@@ -45,15 +41,15 @@ module Parser
           consume(MINUS)
         end
 
-        node = BinaryOperator.new(node, token, multiply_divide)
+        node = BinaryOperator.new(node, token, term)
       end
 
       node
     end
 
-    def multiply_divide
-      # multiply_divide : number_parentheses ((MULTIPLY | DIVIDE) number_parentheses)*
-      node = number_parentheses
+    def term
+      # term : factor ((MULTIPLY | DIVIDE) factor)*
+      node = factor
 
       while @token.type == MULTIPLY || @token.type == DIVIDE
         token = @token
@@ -63,31 +59,31 @@ module Parser
           consume(DIVIDE)
         end
 
-        node = BinaryOperator.new(node, token, number_parentheses)
+        node = BinaryOperator.new(node, token, factor)
       end
 
       node
     end
 
-    def number_parentheses
-      # number_parentheses : (PLUS | MINUS) number_parentheses | INTEGER | LEFT_PARENTHESIS plus_minus RIGHT_PARENTHESIS
+    def factor
+      # factor : (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN
       token = @token
       node = nil # I don't think this should be nil; mirroring other methods for consistency. Should return early instead.
 
       if token.type == PLUS
         operator = token
         consume(PLUS)
-        node = UnaryOperator.new(operator, number_parentheses)
+        node = UnaryOperator.new(operator, factor)
       elsif token.type == MINUS
         operator = token
         consume(MINUS)
-        node = UnaryOperator.new(operator, number_parentheses)
+        node = UnaryOperator.new(operator, factor)
       elsif token.type == INTEGER
         consume(INTEGER)
         node = Number.new(token)
       elsif token.type == LEFT_PARENTHESIS
         consume(LEFT_PARENTHESIS)
-        node = plus_minus
+        node = expr
         consume(RIGHT_PARENTHESIS)
       end
 
