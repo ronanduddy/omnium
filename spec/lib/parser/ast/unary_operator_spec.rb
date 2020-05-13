@@ -8,7 +8,7 @@ RSpec.describe Parser::AST::UnaryOperator do
   subject(:unary_operator) { described_class.new(operator, operand) }
 
   let(:operator) { minus_token }
-  let(:operand) { integer_token(5) }
+  let(:operand) { integer_token 5 }
 
   describe '#initialize' do
     it 'has the correct properties' do

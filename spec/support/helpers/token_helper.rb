@@ -36,6 +36,30 @@ module Helpers
       Token.new(:right_parenthesis, ')')
     end
 
+    def semicolon_token
+      Token.new(:semicolon, ';')
+    end
+
+    def dot_token
+      Token.new(:dot, '.')
+    end
+
+    def assignment_token
+      Token.new(:assignment, ':=')
+    end
+
+    def identifier_token(name)
+      Token.new(:id, name)
+    end
+
+    def begin_keyword_token
+      Token.new(:begin, 'begin')
+    end
+
+    def end_keyword_token
+      Token.new(:end, 'end')
+    end
+
     def eof_token
       Token.new(:eof, nil)
     end

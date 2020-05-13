@@ -80,9 +80,9 @@ RSpec::Matchers.define :be_an_assignment_token do
   end
 end
 
-RSpec::Matchers.define :be_an_identifier_token do |value|
+RSpec::Matchers.define :be_an_identifier_token do |name|
   match do |actual|
-    actual.type == :id && actual.value == value
+    actual.type == :id && actual.value == name
   end
 end
 

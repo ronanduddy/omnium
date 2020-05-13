@@ -2,12 +2,11 @@
 
 require 'parser/ast/number'
 require 'support/helpers/token_helper'
-require 'support/matchers/token'
 
 RSpec.describe Parser::AST::Number do
   subject(:number) { described_class.new(token) }
 
-  let(:token) { integer_token(2) }
+  let(:token) { integer_token 2 }
 
   describe '#initialize' do
     it 'has the correct properties' do

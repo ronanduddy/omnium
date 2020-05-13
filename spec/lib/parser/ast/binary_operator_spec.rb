@@ -7,9 +7,9 @@ require 'support/matchers/token'
 RSpec.describe Parser::AST::BinaryOperator do
   subject(:binary_operator) { described_class.new(left, operator, right) }
 
-  let(:left) { integer_token(2) }
+  let(:left) { integer_token 2 }
   let(:operator) { plus_token }
-  let(:right) { integer_token(5) }
+  let(:right) { integer_token 5 }
 
   describe '#initialize' do
     it 'has the correct properties' do

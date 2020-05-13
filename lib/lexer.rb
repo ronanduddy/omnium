@@ -103,9 +103,9 @@ class Lexer
       keyword = reserved_keyword
 
       if RESERVED_KEYWORDS.include?(keyword.intern)
-        token(keyword.intern, keyword)
+        token(keyword.intern, keyword) # reserved keyword
       else
-        token(:id, keyword)
+        token(:id, keyword) # variable/identifier
       end
     when INTEGER
       token(:integer, integer)
