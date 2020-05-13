@@ -2,6 +2,7 @@
 
 require 'parser/ast/number'
 require 'support/helpers/token_helper'
+require 'support/matchers/token'
 
 RSpec.describe Parser::AST::Number do
   subject(:number) { described_class.new(token) }
@@ -9,6 +10,8 @@ RSpec.describe Parser::AST::Number do
   let(:token) { integer_token(2) }
 
   describe '#initialize' do
-    it { is_expected.to have_attributes(value: 2) }
+    it 'has the correct properties' do
+      expect(number.value).to eq 2
+    end
   end
 end

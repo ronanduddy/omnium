@@ -4,7 +4,7 @@ require_relative 'base'
 
 module Parser
   module AST
-    # This node represents a variable, accepting an ID token. 
+    # This node represents a variable, accepting an ID token.
     class Variable < Base
       attr_reader :value
 

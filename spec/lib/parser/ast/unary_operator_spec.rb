@@ -2,6 +2,7 @@
 
 require 'parser/ast/unary_operator'
 require 'support/helpers/token_helper'
+require 'support/matchers/token'
 
 RSpec.describe Parser::AST::UnaryOperator do
   subject(:unary_operator) { described_class.new(operator, operand) }
@@ -10,7 +11,9 @@ RSpec.describe Parser::AST::UnaryOperator do
   let(:operand) { integer_token(5) }
 
   describe '#initialize' do
-    #  a limp sort of test... 
-    it { is_expected.to have_attributes(operator: operator, operand: operand) }
+    it 'has the correct properties' do
+      expect(unary_operator.operator).to be_a_minus_token
+      expect(unary_operator.operand).to be_an_integer_token 5
+    end
   end
 end
