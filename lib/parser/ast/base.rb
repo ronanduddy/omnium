@@ -4,6 +4,7 @@
 module Parser
   module AST
     class Base
+      # noop...
     end
   end
 end

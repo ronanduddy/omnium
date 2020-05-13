@@ -4,11 +4,11 @@ require_relative 'base'
 
 module Parser
   module AST
-    # An integer node, which would accept an integer/number token.
-    class Number < Base
+    # This node represents a variable, accepting an ID token. 
+    class Variable < Base
       attr_reader :value
 
-      def initialize(token)
+      def initialize
         @token = token # for convenience, though no getter for this
         @value = token.value
       end
