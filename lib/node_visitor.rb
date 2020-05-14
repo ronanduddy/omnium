@@ -5,7 +5,7 @@ class NodeVisitor
   def visit(node)
     method_name = "visit_#{class_name(node)}"
     send(method_name, node)
-  rescue NameError => e
+  rescue NameError
     raise NotImplementedError, "Subclass does not implement #{method_name}"
   end
 

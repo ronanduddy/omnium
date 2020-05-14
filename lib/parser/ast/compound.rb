@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'base'
-
 module Parser
   module AST
     # This compound statement is for a 'begin ... end' block and therefore

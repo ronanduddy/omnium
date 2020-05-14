@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'token'
+require 'lexer/token'
 
-RSpec.describe Token do
+RSpec.describe Lexer::Token do
   subject(:token) { described_class.new(type, value) }
 
   let(:type) { :integer }

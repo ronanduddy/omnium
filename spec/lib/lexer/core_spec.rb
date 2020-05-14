@@ -5,7 +5,7 @@
 require 'lexer'
 require 'support/matchers/token'
 
-RSpec.describe Lexer do
+RSpec.describe Lexer::Core do
   subject(:lex) { described_class.new(text) }
 
   describe '#next_token' do

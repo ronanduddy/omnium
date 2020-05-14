@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'base'
-
 module Parser
   module AST
     # This is an assignment statement, for example 'x := 5' or 'y := x'. @left

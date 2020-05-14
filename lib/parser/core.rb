@@ -29,9 +29,9 @@ module Parser
         token = @token
 
         if plus?
-          consume(TOKENS[:plus][:type])
+          consume(plus_token)
         elsif minus?
-          consume(TOKENS[:minus][:type])
+          consume(minus_token)
         end
 
         node = BinaryOperator.new(node, token, term)
@@ -48,9 +48,9 @@ module Parser
         token = @token
 
         if multiply?
-          consume(TOKENS[:multiply][:type])
+          consume(multiply_token)
         elsif divide?
-          consume(TOKENS[:divide][:type])
+          consume(divide_token)
         end
 
         node = BinaryOperator.new(node, token, factor)
@@ -66,19 +66,19 @@ module Parser
 
       if plus?
         operator = token
-        consume(TOKENS[:plus][:type])
+        consume(plus_token)
         node = UnaryOperator.new(operator, factor)
       elsif minus?
         operator = token
-        consume(TOKENS[:minus][:type])
+        consume(minus_token)
         node = UnaryOperator.new(operator, factor)
       elsif integer?
-        consume(TOKENS[:integer][:type])
+        consume(integer_token)
         node = Number.new(token)
       elsif left_parenthesis?
-        consume(TOKENS[:left_parenthesis][:type])
+        consume(left_parenthesis_token)
         node = expr
-        consume(TOKENS[:right_parenthesis][:type])
+        consume(right_parenthesis_token)
       end
 
       node
@@ -87,7 +87,8 @@ module Parser
     def consume(type)
       # verify the type of @token and advance @token to next_token
       unless type == @token.type
-        message = "Expecting '#{TOKENS[type][:value]}', got #{@token.inspect}."
+        message = "Expecting '#{send("#{type}_token", :value)}', " \
+                  "got #{@token.inspect}."
         raise(ParserError, message)
       end
 

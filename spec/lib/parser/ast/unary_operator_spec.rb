@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'parser/ast/base'
 require 'parser/ast/unary_operator'
 require 'support/helpers/token_helper'
 require 'support/matchers/token'

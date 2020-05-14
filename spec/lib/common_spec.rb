@@ -12,9 +12,9 @@ RSpec.describe Common do
     end.new
   end
 
-  Common::VALUE_BASED_TOKENS.each_pair do |key, token|
-    describe "##{key}?" do
-      subject { dummy.send("#{key}?") }
+  Common::VALUE_BASED_TOKENS.each do |token|
+    describe "##{token[:type]}?" do
+      subject { dummy.send("#{token[:type]}?") }
 
       context "with token value '#{token[:value]}'" do
         before { allow(dummy).to receive(:token_entity) { token[:value] } }
@@ -34,11 +34,39 @@ RSpec.describe Common do
         it { is_expected.to be false }
       end
     end
+
+    describe "##{token[:type]}_token" do
+      context 'with no arguments' do
+        subject { dummy.send("#{token[:type]}_token") }
+
+        it 'defaults to return the token type' do
+          is_expected.to be token[:type]
+        end
+      end
+
+      context 'with argument :type' do
+        subject { dummy.send("#{token[:type]}_token", :type) }
+
+        it { is_expected.to be token[:type] }
+      end
+
+      context 'with argument :value' do
+        subject { dummy.send("#{token[:type]}_token", :value) }
+
+        it { is_expected.to be token[:value] }
+      end
+
+      context 'with invalid argument' do
+        subject { dummy.send("#{token[:type]}_token", :food) }
+
+        it { expect { subject }.to raise_error(ArgumentError) }
+      end
+    end
   end
 
-  Common::PARAMETERISED_TOKENS.each_pair do |key, token|
-    describe "##{key}?" do
-      subject { dummy.send("#{key}?") }
+  Common::PARAMETERISED_TOKENS.each do |token|
+    describe "##{token[:type]}?" do
+      subject { dummy.send("#{token[:type]}?") }
 
       context "with token type :#{token[:type]}" do
         before { allow(dummy).to receive(:token_entity) { token[:type] } }
@@ -52,31 +80,19 @@ RSpec.describe Common do
         it { is_expected.to be false }
       end
     end
+
+    describe "##{token[:type]}_token" do
+      subject { dummy.send("#{token[:type]}_token") }
+
+      it { is_expected.to be token[:type] }
+    end
   end
 
-  describe 'token creation' do
-    Common::VALUE_BASED_TOKENS.each_pair do |key, token|
-      context "##{key}_token" do
-        subject { dummy.send("#{key}_token") }
+  Common::RESERVED_KEYWORDS.each_pair do |key, _value|
+    describe "##{key}_token" do
+      subject { dummy.send("#{key}_token") }
 
-        it { is_expected.to be_a_token(token[:type], token[:value]) }
-      end
-    end
-
-    Common::PARAMETERISED_TOKENS.each_pair do |key, token|
-      context "##{key}_token(:foo)" do
-        subject { dummy.send("#{key}_token", :foo) }
-
-        it { is_expected.to be_a_token(token[:type], :foo) }
-      end
-    end
-
-    Common::RESERVED_KEYWORDS.each_pair do |key, value|
-      context "##{key}_token" do
-        subject { dummy.send("#{key}_token") }
-
-        it { is_expected.to be_a_token(key, value) }
-      end
+      it { is_expected.to be key }
     end
   end
 end

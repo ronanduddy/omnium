@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'base'
-
 module Parser
   module AST
     # This node represents a variable or an identifier, accepting an ID token.

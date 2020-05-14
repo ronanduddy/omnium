@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'parser/ast/base'
 require 'parser/ast/compound'
 
 RSpec.describe Parser::AST::Compound do

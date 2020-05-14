@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'lexer'
 require 'parser'
 require 'support/helpers/lexer_helper'
 require 'support/helpers/token_helper'

@@ -60,7 +60,7 @@ RSpec.describe Interpreter do
       )
     end
 
-    it { is_expected.to eq -3 }
+    it { is_expected.to eq(-3) }
   end
 
   describe '#visit_BinaryOperator' do

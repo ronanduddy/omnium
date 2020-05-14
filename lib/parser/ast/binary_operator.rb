@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'base'
-
 module Parser
   module AST
     # Binary operator represents the four binary operations: add, subtract, multiply

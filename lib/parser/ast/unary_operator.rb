@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'base'
-
 module Parser
   module AST
     # Unary Operator represents a plus or minus on a number e.g. +1 or -5. That is
