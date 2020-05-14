@@ -82,7 +82,7 @@ end
 
 RSpec::Matchers.define :be_an_identifier_token do |name|
   match do |actual|
-    actual.type == :id && actual.value == name
+    actual.type == :identifier && actual.value == name
   end
 end
 

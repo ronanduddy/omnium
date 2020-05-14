@@ -49,7 +49,7 @@ module Helpers
     end
 
     def identifier_token(name)
-      Token.new(:id, name)
+      Token.new(:identifier, name)
     end
 
     def begin_keyword_token

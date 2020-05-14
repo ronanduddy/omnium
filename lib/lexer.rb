@@ -3,24 +3,11 @@
 # frozen_text_literal: true
 
 require_relative 'token'
+require_relative 'common'
 
 # The lexer returns tokens for a given text.
 class Lexer
-  WHITESPACE = ' '
-  PLUS = '+'
-  MINUS = '-'
-  MULTIPLY = '*'
-  DIVIDE = '/'
-  LEFT_PARENTHESIS = '('
-  RIGHT_PARENTHESIS = ')'
-  SEMICOLON = ';'
-  DOT = '.'
-  ASSIGNMENT = [':', '='].freeze
-
-  RESERVED_KEYWORDS = {
-    begin: 'begin',
-    end: 'end'
-  }.freeze
+  include Common
 
   INTEGER = /[0-9]/.freeze
   ALPHA = /[a-zA-Z]/.freeze
@@ -34,7 +21,7 @@ class Lexer
   end
 
   def next_token
-    return token(:eof, nil) if eos?
+    return eof_token if eos?
 
     advance while whitespace?
 
@@ -54,7 +41,7 @@ class Lexer
   end
 
   def character
-    @text[@pointer]
+    @character = @text[@pointer]
   end
 
   def peek
@@ -90,52 +77,50 @@ class Lexer
   end
 
   def assignment?
-    proc { character == ASSIGNMENT.first && peek == ASSIGNMENT.last }
-  end
+    colon = TOKENS[:assignment][:value][0]
+    equals = TOKENS[:assignment][:value][1]
 
-  def token(type, value)
-    Token.new(type, value)
+    character == colon && peek == equals
   end
 
   def tokenise
-    case character
-    when ALPHA
-      keyword = reserved_keyword
+    if character =~ ALPHA
+      word = reserved_keyword
 
-      if RESERVED_KEYWORDS.include?(keyword.intern)
-        token(keyword.intern, keyword) # reserved keyword
+      if RESERVED_KEYWORDS.include?(word.intern)
+        send("#{word}_token")
       else
-        token(:id, keyword) # variable/identifier
+        identifier_token(word)
       end
-    when INTEGER
-      token(:integer, integer)
-    when PLUS
+    elsif character =~ INTEGER
+      integer_token(integer)
+    elsif plus?
       advance
-      token(:plus, PLUS)
-    when MINUS
+      plus_token
+    elsif minus?
       advance
-      token(:minus, MINUS)
-    when MULTIPLY
+      minus_token
+    elsif multiply?
       advance
-      token(:multiply, MULTIPLY)
-    when DIVIDE
+      multiply_token
+    elsif divide?
       advance
-      token(:divide, DIVIDE)
-    when LEFT_PARENTHESIS
+      divide_token
+    elsif left_parenthesis?
       advance
-      token(:left_parenthesis, LEFT_PARENTHESIS)
-    when RIGHT_PARENTHESIS
+      left_parenthesis_token
+    elsif right_parenthesis?
       advance
-      token(:right_parenthesis, RIGHT_PARENTHESIS)
-    when assignment?
+      right_parenthesis_token
+    elsif assignment?
       advance(2)
-      token(:assignment, ASSIGNMENT.join)
-    when SEMICOLON
+      assignment_token
+    elsif semicolon?
       advance
-      token(:semicolon, SEMICOLON)
-    when DOT
+      semicolon_token
+    elsif dot?
       advance
-      token(:dot, DOT)
+      dot_token
     else
       raise(LexerError, "Error tokenising #{character}")
     end

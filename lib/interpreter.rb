@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-require_relative 'node_visitor'
+require 'node_visitor'
+require 'common'
 
 # The visitor pattern is used to traverse the AST. This class may be thought of
 # as a 'tree visitor'.
 class Interpreter < NodeVisitor
-  PLUS = :plus
-  MINUS = :minus
-  MULTIPLY = :multiply
-  DIVIDE = :divide
+  include Common
 
   def initialize(parser)
     @parser = parser
@@ -26,26 +24,26 @@ class Interpreter < NodeVisitor
   end
 
   def visit_UnaryOperator(node)
-    case node.operator.type
-    when PLUS
+    @type = node.operator.type
+
+    if plus?
       +visit(node.operand)
-    when MINUS
+    elsif minus?
       -visit(node.operand)
     end
   end
 
   def visit_BinaryOperator(node)
-    case node.operator.type
-    when PLUS
+    @type = node.operator.type
+
+    if plus?
       visit(node.left) + visit(node.right)
-    when MINUS
+    elsif minus?
       visit(node.left) - visit(node.right)
-    when MULTIPLY
+    elsif multiply?
       visit(node.left) * visit(node.right)
-    when DIVIDE
+    elsif divide?
       visit(node.left) / visit(node.right)
-    else
-      # something here...
     end
   end
 end

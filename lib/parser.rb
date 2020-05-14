@@ -11,5 +11,6 @@ module Parser
     require 'parser/ast/variable'
   end
 
+  require 'common'
   require 'parser/core'
 end
