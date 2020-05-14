@@ -6,7 +6,7 @@ require 'interpreter'
 require 'support/helpers/token_helper'
 require 'support/helpers/ast_node_helpers'
 
-RSpec.describe Interpreter do
+RSpec.describe Interpreter::Core do
   subject(:interpreter) { described_class.new(parser) }
 
   let(:parser) { instance_double(Parser::Core, parse: tree) }

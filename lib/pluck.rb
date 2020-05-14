@@ -18,7 +18,7 @@ loop do
 
     lexer = Lexer::Core.new(input)
     parser = Parser::Core.new(lexer)
-    interpreter = Interpreter.new(parser)
+    interpreter = Interpreter::Core.new(parser)
     result = interpreter.interpret
 
     puts result

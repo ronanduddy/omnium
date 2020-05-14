@@ -2,11 +2,11 @@
 
 require 'common'
 require 'parser'
-require 'node_visitor'
+require 'interpreter/node_visitor'
 require 'support/helpers/token_helper'
 require 'support/helpers/ast_node_helpers'
 
-RSpec.describe NodeVisitor do
+RSpec.describe Interpreter::NodeVisitor do
   subject(:node_visitor) { described_class.new }
 
   let(:node) do
