@@ -16,9 +16,9 @@ loop do
 
     break if input == 'exit'
 
-    lexer = Lexer::Core.new(input)
-    parser = Parser::Core.new(lexer)
-    interpreter = Interpreter::Core.new(parser)
+    lexer = Lexer.new(input)
+    parser = Parser.new(lexer)
+    interpreter = Interpreter.new(parser)
     result = interpreter.interpret
 
     puts result

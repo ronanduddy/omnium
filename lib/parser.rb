@@ -13,4 +13,8 @@ module Parser
   end
 
   require 'parser/core'
+
+  def self.new(lexer)
+    Parser::Core.new(lexer)
+  end
 end
