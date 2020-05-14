@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require 'interpreter'
+require 'common'
 require 'parser'
+require 'interpreter'
 require 'support/helpers/token_helper'
 require 'support/helpers/ast_node_helpers'
 

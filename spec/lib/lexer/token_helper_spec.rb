@@ -14,6 +14,8 @@ RSpec.describe Lexer::TokenHelper do
     end.new
   end
 
+  # probably 'not good' to refrence Common in this spec 
+
   describe 'token creation' do
     Common::VALUE_BASED_TOKENS.each do |token|
       context "#new_#{token[:type]}_token" do

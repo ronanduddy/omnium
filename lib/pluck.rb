@@ -4,6 +4,7 @@
 $LOAD_PATH << './lib'
 
 require 'pry'
+require 'common'
 require 'lexer'
 require 'parser'
 require 'interpreter'

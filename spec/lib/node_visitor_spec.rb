@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'common'
+require 'parser'
 require 'node_visitor'
 require 'support/helpers/token_helper'
 require 'support/helpers/ast_node_helpers'

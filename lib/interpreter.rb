@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'node_visitor'
-require 'common'
 
 # The visitor pattern is used to traverse the AST. This class may be thought of
 # as a 'tree visitor'.

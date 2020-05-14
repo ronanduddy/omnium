@@ -2,6 +2,7 @@
 
 # frozen_text_literal: true
 
+require 'common'
 require 'lexer'
 require 'support/matchers/token'
 
