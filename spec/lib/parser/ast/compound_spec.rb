@@ -9,4 +9,12 @@ RSpec.describe Parser::AST::Compound do
   describe '#initialize' do
     it { is_expected.to have_attributes(children: []) }
   end
+
+  describe '#append' do
+    subject(:append) { compound.append(nodes) }
+
+    let(:nodes) { [1, 2, 3] }
+
+    it { expect(append.children).to contain_exactly(1, 2, 3) }
+  end
 end

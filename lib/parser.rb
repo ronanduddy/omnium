@@ -12,6 +12,7 @@ module Parser
     require 'parser/ast/variable'
   end
 
+  require 'parser/parse_error_handler'
   require 'parser/core'
 
   def self.new(lexer)

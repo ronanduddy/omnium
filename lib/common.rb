@@ -47,15 +47,17 @@ module Common
     end
   end
 
+  # perhaps all these could be merged or cleaned up at some point...
+
   # create helper methods from VALUE_BASED_TOKENS
   VALUE_BASED_TOKENS.each do |token|
-    # for plus?, for example, return true if @character is '+' or @type is :plus
+    # e.g. plus? returns true if @character is '+' or @type is :plus
     define_method "#{token[:type]}?" do
       token_entity == token[:type] || token_entity == token[:value]
     end
 
-    # for plus_token, for example, return :plus
-    # for plus_token(:value), for example, return '+'
+    # e.g. plus_token returns :plus
+    # e.g. plus_token(:value) returns '+'
     define_method "#{token[:type]}_token" do |symbol = :type|
       return token[:type] if symbol == :type
       return token[:value] if symbol == :value
@@ -66,12 +68,25 @@ module Common
 
   # create helper methods from PARAMETERISED_TOKENS
   PARAMETERISED_TOKENS.each do |token|
-    # for integer?, for example, return true if @type is :plus
+    # e.g. integer? returns true if @type is :plus
     define_method "#{token[:type]}?" do
       token_entity == token[:type]
     end
 
-    # for integer_token, for example, return :integer
+    # e.g. integer_token returns :integer
+    define_method "#{token[:type]}_token" do
+      token[:type]
+    end
+  end
+
+  # create helper methods from NIL_VALUE_TOKENS
+  NIL_VALUE_TOKENS.each do |token|
+    # e.g. eof? returns true if @type is :eof
+    define_method "#{token[:type]}?" do
+      token_entity == token[:type]
+    end
+
+    # e.g. eof_token returns :eof
     define_method "#{token[:type]}_token" do
       token[:type]
     end
@@ -79,7 +94,12 @@ module Common
 
   # create helper methods from RESERVED_KEYWORDS
   RESERVED_KEYWORDS.each_pair do |key, _value|
-    # for begin_token, for example, return :begin
+    # e.g. begin? returns true if @type is :begin
+    define_method "#{key}?" do
+      token_entity == key
+    end
+
+    # e.g. begin_token returns :begin
     define_method "#{key}_token" do
       key
     end

@@ -10,6 +10,11 @@ module Parser
       def initialize
         @children = []
       end
+
+      def append(nodes)
+        nodes.each { |node| @children << node }
+        self
+      end
     end
   end
 end

@@ -7,8 +7,8 @@ module Helpers
     module CompoundHelper
       include Parser::AST
 
-      def compound_node
-        Compound.new
+      def compound_node(nodes)
+        Compound.new.append(nodes)
       end
     end
   end
