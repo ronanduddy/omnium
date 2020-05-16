@@ -6,8 +6,13 @@ module Interpreter
   class Core < NodeVisitor
     include Common
 
+    class InterpreterError < StandardError; end
+
+    attr_reader :symbol_table
+
     def initialize(parser)
       @parser = parser
+      @symbol_table = {}
     end
 
     def interpret
@@ -17,18 +22,22 @@ module Interpreter
 
     # concrete visitor operations below
 
-    def visit_Number(node)
-      node.value
+    def visit_Compound(node)
+      node.children.each { |child| visit(child) }
     end
 
-    def visit_UnaryOperator(node)
-      @type = node.operator.type
+    def visit_Assignment(node)
+      symbol_table[node.left.name.intern] = visit(node.right)
+    end
 
-      if plus?
-        +visit(node.operand)
-      elsif minus?
-        -visit(node.operand)
-      end
+    def visit_Variable(node)
+      symbol_table.fetch(node.name.intern)
+    rescue KeyError
+      raise(InterpreterError, "Variable '#{node.name}' not found")
+    end
+
+    def visit_NoOperation(node)
+      # noop
     end
 
     def visit_BinaryOperator(node)
@@ -43,6 +52,20 @@ module Interpreter
       elsif divide?
         visit(node.left) / visit(node.right)
       end
+    end
+
+    def visit_UnaryOperator(node)
+      @type = node.operator.type
+
+      if plus?
+        +visit(node.operand)
+      elsif minus?
+        -visit(node.operand)
+      end
+    end
+
+    def visit_Number(node)
+      node.value
     end
   end
 end
