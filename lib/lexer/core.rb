@@ -9,6 +9,9 @@ module Lexer
     include TokenHelper
 
     WHITESPACE = ' '
+    COMMENT = '#'
+    NEWLINE = "\n"
+    DECIMAL_POINT = '.'
 
     INTEGER = /[0-9]/.freeze
     ALPHA = /[a-zA-Z]/.freeze
@@ -25,6 +28,15 @@ module Lexer
       return new_eof_token if eos?
 
       advance while whitespace?
+      advance until newline? || eos? if comment?
+
+      # a comment starts with # and closes with \n
+      if newline?
+        advance
+      elsif eos?
+        return new_eof_token
+      end
+
 
       (@pointer...@text.length).each do
         return tokenise
@@ -52,15 +64,39 @@ module Lexer
     end
 
     def whitespace?
-      WHITESPACE == character
+      character == WHITESPACE
     end
 
-    def integer
+    def comment?
+      character == COMMENT
+    end
+
+    def newline?
+      character == NEWLINE
+    end
+
+    def decimal?
+      character == DECIMAL_POINT
+    end
+
+    def number
       result = ''
 
       while character =~ INTEGER
         result += character
         advance
+      end
+
+      if decimal?
+        result += character
+        advance
+
+        while character =~ INTEGER
+          result += character
+          advance
+        end
+
+        return result.to_f
       end
 
       result.to_i
@@ -84,17 +120,24 @@ module Lexer
       character == colon && peek == equals
     end
 
+    def word_token(word)
+      if RESERVED_KEYWORDS.include?(word.intern)
+        send("new_#{word}_token")
+      else
+        new_identifier_token(word)
+      end
+    end
+
+    def number_token(num)
+      return new_integer_token(num) if num.is_a? Integer
+      new_real_token(num)
+    end
+
     def tokenise
       if character =~ ALPHA
-        word = reserved_keyword
-
-        if RESERVED_KEYWORDS.include?(word.intern)
-          send("new_#{word}_token")
-        else
-          new_identifier_token(word)
-        end
+        word_token(reserved_keyword)
       elsif character =~ INTEGER
-        new_integer_token(integer)
+        number_token(number)
       elsif plus?
         advance
         new_plus_token
@@ -119,11 +162,17 @@ module Lexer
       elsif semicolon?
         advance
         new_semicolon_token
+      elsif colon?
+        advance
+        new_colon_token
+      elsif comma?
+        advance
+        new_comma_token
       elsif dot?
         advance
         new_dot_token
       else
-        raise(LexerError, "Error tokenising #{character}")
+        raise(LexerError, "Error tokenising '#{character}' at position #{@pointer}")
       end
     end
   end

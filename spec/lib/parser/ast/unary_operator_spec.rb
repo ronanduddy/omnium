@@ -14,7 +14,7 @@ RSpec.describe Parser::AST::UnaryOperator do
   describe '#initialize' do
     it 'has the correct properties' do
       expect(unary_operator.operator).to be_a_minus_token
-      expect(unary_operator.operand).to be_an_integer_token 5
+      expect(unary_operator.operand).to be_a_integer_token 5
     end
   end
 end

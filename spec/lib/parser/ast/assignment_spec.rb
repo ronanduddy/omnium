@@ -14,9 +14,9 @@ RSpec.describe Parser::AST::Assignment do
 
   describe '#initialize' do
     it 'has the correct properties' do
-      expect(assignment.left).to be_an_identifier_token 'num'
-      expect(assignment.operator).to be_an_assignment_token
-      expect(assignment.right).to be_an_integer_token 5
+      expect(assignment.left).to be_a_identifier_token 'num'
+      expect(assignment.operator).to be_a_assignment_token
+      expect(assignment.right).to be_a_integer_token 5
     end
   end
 end

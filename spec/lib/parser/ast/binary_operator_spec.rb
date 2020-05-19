@@ -14,9 +14,9 @@ RSpec.describe Parser::AST::BinaryOperator do
 
   describe '#initialize' do
     it 'has the correct properties' do
-      expect(binary_operator.left).to be_an_integer_token 2
+      expect(binary_operator.left).to be_a_integer_token 2
       expect(binary_operator.operator).to be_a_plus_token
-      expect(binary_operator.right).to be_an_integer_token 5
+      expect(binary_operator.right).to be_a_integer_token 5
     end
   end
 end

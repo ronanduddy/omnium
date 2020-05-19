@@ -4,23 +4,32 @@ module Lexer
   module TokenHelper
     include Common
 
-    # I wonder could this module be converted to use the builder pattern or
-    # something... perhaps this reflection-metaprogammy stuff has went to my head.
+    def define_new_token_method(type, value, arity = 0)
+      method_name = "new_#{type}_token"
 
-    # create helper methods from TOKENS to return tokens
-    # e.g. integer_token(3) or plus_token
-    TOKENS.each do |token|
-      define_method "new_#{token[:type]}_token" do |value = nil|
-        Token.new(token[:type], token[:value] || value)
+      if arity == 0
+        define_method(method_name) { Token.new(type, value) }
+      else
+        define_method(method_name) { |argument| Token.new(type, argument) }
       end
     end
 
-    # create helper methods from RESERVED_KEYWORDS to return reserved keyword
-    # tokens e.g. begin_token
+    module_function :define_new_token_method
+
+    VALUE_BASED_TOKENS.each do |token|
+      define_new_token_method(token[:type], token[:value])
+    end
+
+    PARAMETERISED_TOKENS.each do |token|
+      define_new_token_method(token[:type], nil, 1)
+    end
+
+    NIL_VALUE_TOKENS.each do |token|
+      define_new_token_method(token[:type], nil)
+    end
+
     RESERVED_KEYWORDS.each_pair do |key, value|
-      define_method "new_#{key}_token" do
-        Token.new(key, value)
-      end
+      define_new_token_method(key, value)
     end
   end
 end
