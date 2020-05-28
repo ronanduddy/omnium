@@ -9,7 +9,7 @@ module Parser
     require 'parser/ast/assignment'
     require 'parser/ast/compound'
     require 'parser/ast/no_operation'
-    require 'parser/ast/variable'
+    require 'parser/ast/identifier'
   end
 
   require 'parser/parse_error_handler'

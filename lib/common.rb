@@ -17,8 +17,8 @@ module Common
 
   PARAMETERISED_TOKENS = [
     { type: :identifier },
-    { type: :integer },
-    { type: :real }
+    { type: :integer }, # int
+    { type: :real } # float
   ].freeze
 
   NIL_VALUE_TOKENS = [
@@ -31,10 +31,10 @@ module Common
            .merge(nil_value: NIL_VALUE_TOKENS)
 
   RESERVED_KEYWORDS = {
-    program: 'pancake',
+    program: 'program',
     var: 'var',
-    int: 'int',
-    float: 'float',
+    int: 'int', # integer
+    float: 'float', # real
     begin: 'begin',
     end: 'end'
   }.freeze

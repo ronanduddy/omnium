@@ -12,6 +12,10 @@ module Helpers
       Lexer::Token.new(:integer, value)
     end
 
+    def real_token(value)
+      Lexer::Token.new(:real, value)
+    end
+
     def plus_token
       Lexer::Token.new(:plus, '+')
     end
@@ -52,16 +56,24 @@ module Helpers
       Lexer::Token.new(:identifier, name)
     end
 
-    def begin_keyword_token
+    def begin_token
       Lexer::Token.new(:begin, 'begin')
     end
 
-    def end_keyword_token
+    def end_token
       Lexer::Token.new(:end, 'end')
     end
 
     def eof_token
       Lexer::Token.new(:eof, nil)
+    end
+
+    def int_token
+      Lexer::Token.new(:int, 'int')
+    end
+
+    def float_token
+      Lexer::Token.new(:float, 'float')
     end
   end
 end

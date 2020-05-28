@@ -17,25 +17,72 @@ module Parser
     def parse
       @token = @lexer.next_token
       node = program
+
       error(expected_type: eof_token, actual_type: @token.type) unless eof?
 
       node
-    rescue ParseError => e
-      # a little hack to allow the parser to parse either a program i.e.
-      # 'begin ... end' or arithmetic e.g. '1+1'
-      raise unless e.expected_type == begin_token
-
-      expr
     end
 
     private
 
     def program
-      # program : compound_statement DOT
-      node = compound_statement
+      # program : PROGRAM variable SEMI block DOT
+      consume(program_token)
+      name = identifier.name
+      consume(semicolon_token)
+      node = Program.new(name, block)
       consume(dot_token)
 
       node
+    end
+
+    def block
+      # block : variable_declarations compound_statement
+      Block.new(variable_declarations, compound_statement)
+    end
+
+    def variable_declarations
+      # variable_declarations : VAR (variable_declaration SEMI)+
+      #                       | empty
+      declarations = []
+
+      if var?
+        consume(var_token)
+
+        while identifier?
+          declarations << variable_declaration
+          consume(semicolon_token)
+        end
+      end
+
+      declarations
+    end
+
+    def variable_declaration
+      # variable_declaration : ID (COMMA ID)* COLON variable_data_type
+      identifiers = [identifier]
+
+      while comma?
+        consume(comma_token)
+        identifiers << identifier
+      end
+
+      consume(colon_token)
+
+      data_type = variable_data_type
+      identifiers.map { |identifier| VariableDeclaration.new(identifier, data_type) }
+    end
+
+    def variable_data_type
+      # variable_data_type : INTEGER
+      #                    | FLOAT
+      if int?
+        consume(int_token)
+      elsif float?
+        consume(float_token)
+      end
+
+      DataType.new(@consumed_token)
     end
 
     def compound_statement
@@ -77,15 +124,15 @@ module Parser
 
     def assignment_statement
       # assignment_statement : variable ASSIGN expr
-      left = variable
+      left = identifier
       consume(assignment_token)
 
       Assignment.new(left, @consumed_token, expr)
     end
 
-    def variable
+    def identifier
       # variable : ID
-      node = Variable.new(@token)
+      node = Identifier.new(@token)
       consume(identifier_token)
 
       node
@@ -135,7 +182,7 @@ module Parser
       #        | MINUS factor
       #        | INTEGER
       #        | LPAREN expr RPAREN
-      #        | variable
+      #        | identifier
       if plus?
         consume(plus_token)
         return UnaryOperator.new(@consumed_token, factor)
@@ -145,19 +192,23 @@ module Parser
       elsif integer?
         consume(integer_token)
         return Number.new(@consumed_token)
+      elsif real?
+        consume(real_token)
+        return Number.new(@consumed_token)
       elsif left_parenthesis?
         consume(left_parenthesis_token)
         node = expr
         consume(right_parenthesis_token)
         return node
       elsif identifier?
-        return variable
+        return identifier
       end
 
       expected_types = [
         plus_token,
         minus_token,
         integer_token,
+        real_token,
         left_parenthesis_token,
         right_parenthesis_token,
         identifier_token

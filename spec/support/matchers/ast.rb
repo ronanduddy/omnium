@@ -4,30 +4,53 @@ require 'rspec/expectations'
 
 RSpec::Matchers.define :be_an_ast do |expected|
   match do |actual|
-    to_hash(actual) == to_hash(expected)
+    serialise(actual) == serialise(expected)
+  end
+
+  def serialise(object)
+    if primative?(object)
+      object
+    elsif array?(object)
+      to_array(object)
+    else
+      to_hash(object)
+    end
   end
 
   def to_hash(object)
     hash = {}
 
-    object.instance_variables.each do |variable|
-      nested_object = object.instance_variable_get(variable)
-
-      hash[variable.to_s.delete('@')] = if valid?(nested_object)
-                                          nested_object
-                                        else
-                                          to_hash(nested_object)
-                                        end
+    object.instance_variables.each do |variable_name|
+      variable = object.instance_variable_get(variable_name)
+      hash[variable_name.to_s.delete('@')] = serialise(variable)
     end
 
     hash
   end
 
-  def valid?(object)
-    case object.class
-    when Numeric || Symbol || String
-      return true
-    end
+  def to_array(list)
+    array = []
+
+    list.each { |element| array << serialise(element) }
+
+    array
+  end
+
+  def primative?(object)
+    klass = object.class
+
+    return true if object.is_a? Numeric
+    return true if klass == Symbol
+    return true if klass == String
+
+    false
+  end
+
+  def array?(object)
+    klass = object.class
+
+    return true if klass == Array
+
     false
   end
 end

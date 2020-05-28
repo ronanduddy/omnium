@@ -3,7 +3,7 @@
 module Parser
   module AST
     # This node represents a variable or an identifier, accepting an ID token.
-    class Variable < Base
+    class Identifier < Base
       attr_reader :name
 
       def initialize(token)

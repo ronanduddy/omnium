@@ -16,30 +16,30 @@ RSpec.describe Interpreter::Core do
         compound_node(
           [
             assignment_node(
-              left: variable_node(identifier_token('number')),
+              left: identifier_node(identifier_token('number')),
               operator: assignment_token,
               right: number_node(integer_token(2))
             ),
             assignment_node(
-              left: variable_node(identifier_token('a')),
+              left: identifier_node(identifier_token('a')),
               operator: assignment_token,
-              right: variable_node(identifier_token('number'))
+              right: identifier_node(identifier_token('number'))
             ),
             assignment_node(
-              left: variable_node(identifier_token('b')),
+              left: identifier_node(identifier_token('b')),
               operator: assignment_token,
               right: binary_operator_node(
                 left: binary_operator_node(
                   left: number_node(integer_token(10)),
                   operator: multiply_token,
-                  right: variable_node(identifier_token('a'))
+                  right: identifier_node(identifier_token('a'))
                 ),
                 operator: plus_token,
                 right: binary_operator_node(
                   left: binary_operator_node(
                     left: number_node(integer_token(10)),
                     operator: multiply_token,
-                    right: variable_node(identifier_token('number'))
+                    right: identifier_node(identifier_token('number'))
                   ),
                   operator: divide_token,
                   right: number_node(integer_token(4))
@@ -47,13 +47,13 @@ RSpec.describe Interpreter::Core do
               )
             ),
             assignment_node(
-              left: variable_node(identifier_token('c')),
+              left: identifier_node(identifier_token('c')),
               operator: assignment_token,
               right: binary_operator_node(
-                left: variable_node(identifier_token('a')),
+                left: identifier_node(identifier_token('a')),
                 operator: minus_token,
                 right: unary_operator_node(
-                  operand: variable_node(identifier_token('b')),
+                  operand: identifier_node(identifier_token('b')),
                   operator: minus_token
                 )
               )
@@ -61,7 +61,7 @@ RSpec.describe Interpreter::Core do
           ]
         ),
         assignment_node(
-          left: variable_node(identifier_token('x')),
+          left: identifier_node(identifier_token('x')),
           operator: assignment_token,
           right: number_node(integer_token(11))
         ),
@@ -87,14 +87,14 @@ RSpec.describe Interpreter::Core do
       compound_node(
         [
           assignment_node(
-            left: variable_node(identifier_token('number')),
+            left: identifier_node(identifier_token('number')),
             operator: assignment_token,
             right: number_node(integer_token(2))
           ),
           assignment_node(
-            left: variable_node(identifier_token('a')),
+            left: identifier_node(identifier_token('a')),
             operator: assignment_token,
-            right: variable_node(identifier_token('number'))
+            right: identifier_node(identifier_token('number'))
           )
         ]
       )
@@ -111,7 +111,7 @@ RSpec.describe Interpreter::Core do
 
     let(:node) do
       assignment_node(
-        left: variable_node(identifier_token('number')),
+        left: identifier_node(identifier_token('number')),
         operator: assignment_token,
         right: number_node(integer_token(2))
       )
@@ -123,11 +123,11 @@ RSpec.describe Interpreter::Core do
     end
   end
 
-  describe '#visit_Variable' do
-    subject(:visit_Variable) { interpreter.visit_Variable(node) }
+  describe '#visit_Identifier' do
+    subject(:visit_Identifier) { interpreter.visit_Identifier(node) }
 
     let(:node) do
-      variable_node(identifier_token('number'))
+      identifier_node(identifier_token('number'))
     end
 
     context 'when the variable does exist in the symbol_table' do
@@ -138,7 +138,7 @@ RSpec.describe Interpreter::Core do
 
     context 'when the variable does not exist in the symbol_table' do
       it 'raises an error' do
-        expect { visit_Variable }.to raise_error(
+        expect { visit_Identifier }.to raise_error(
           described_class::InterpreterError
         )
       end

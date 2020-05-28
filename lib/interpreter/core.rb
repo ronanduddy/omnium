@@ -30,7 +30,7 @@ module Interpreter
       symbol_table[node.left.name.intern] = visit(node.right)
     end
 
-    def visit_Variable(node)
+    def visit_Identifier(node)
       symbol_table.fetch(node.name.intern)
     rescue KeyError
       raise(InterpreterError, "Variable '#{node.name}' not found")
