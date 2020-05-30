@@ -11,7 +11,7 @@ RSpec.describe Pluck::CLI do
     context 'with filename' do
       let(:args) { ['hello.plk'] }
 
-      it { is_expected.to eq({ a: 2, b: 25, y: 5.997142857142857}) }
+      it { is_expected.to eq({ a: 2, b: 25, y: 5.997142857142857 }) }
     end
 
     context 'with nil' do

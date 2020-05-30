@@ -20,7 +20,7 @@ RSpec.describe Lexer::Core do
           "a := 2;\n" \
           "b := 10 * a + 10 * a / 4;\n" \
           "y := 20.0 / 7.0 + 3.14;\n" \
-        "end."
+        'end.'
       end
 
       it 'returns the correct tokens' do
@@ -139,7 +139,6 @@ RSpec.describe Lexer::Core do
           expect(lex.next_token).to be_a_eof_token
         end
       end
-
     end
 
     context 'with invalid text' do

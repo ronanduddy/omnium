@@ -10,7 +10,10 @@ def execute(args)
   puts Pluck::CLI.new(args).run
 end
 
-if $0 == __FILE__
-  raise ArgumentError, "Usage: #{$0} <filename>" unless ARGV.length == 1
+if $PROGRAM_NAME == __FILE__
+  unless ARGV.length == 1
+    raise ArgumentError, "Usage: #{$PROGRAM_NAME} <filename>"
+  end
+
   execute(ARGV)
 end

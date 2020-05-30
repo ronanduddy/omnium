@@ -129,6 +129,7 @@ module Lexer
 
     def number_token(num)
       return new_integer_token(num) if num.is_a? Integer
+
       new_real_token(num)
     end
 

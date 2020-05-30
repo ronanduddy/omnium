@@ -233,7 +233,6 @@ RSpec.describe Interpreter::Core do
   end
 
   describe '#visit_NoOperation' do
-
     subject(:visit_NoOperation) { interpreter.visit_NoOperation(node) }
 
     let(:node) { 'noop' }

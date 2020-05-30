@@ -18,7 +18,7 @@ module Pluck
 
       interpret(program)
     rescue TypeError => e
-      raise(CLIError, "@filename is blank.")
+      raise(CLIError, '@filename is blank.')
     rescue Errno::ENOENT => e
       raise(CLIError, "@filename '#{@filename}' does not exist.")
     end

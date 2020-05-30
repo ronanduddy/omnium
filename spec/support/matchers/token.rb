@@ -28,7 +28,7 @@ end
 Common::NIL_VALUE_TOKENS.each do |token|
   RSpec::Matchers.define "be_a_#{token[:type]}_token" do
     match do |actual|
-      actual.type == token[:type] && actual.value == nil
+      actual.type == token[:type] && actual.value.nil?
     end
   end
 end
