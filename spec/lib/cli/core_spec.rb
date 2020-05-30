@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
-require 'pluck/cli'
+require 'common'
+require 'lexer'
+require 'parser'
+require 'interpreter'
+require 'cli/core'
 
-RSpec.describe Pluck::CLI do
+RSpec.describe CLI::Core do
   subject(:cli) { described_class.new(args) }
 
   describe '#run' do

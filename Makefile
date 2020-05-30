@@ -6,7 +6,7 @@ build:
 	@docker-compose build
 
 run:
-	$(docker_run) ./lib/pluck.rb $(file)
+	$(docker_run) ./bin/pluck $(file)
 
 shell: build
 	$(docker_run) sh

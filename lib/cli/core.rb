@@ -1,12 +1,7 @@
 # frozen_string_literal: true
 
-require 'common'
-require 'lexer'
-require 'parser'
-require 'interpreter'
-
-module Pluck
-  class CLI
+module CLI
+  class Core
     class CLIError < StandardError; end
 
     def initialize(args)

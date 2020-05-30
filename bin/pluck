@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << './lib'
+
+require 'pluck'
+
+unless ARGV.length == 1
+  raise ArgumentError, "Usage: #{$PROGRAM_NAME} <filename>"
+end
+
+puts CLI.new(ARGV).run
