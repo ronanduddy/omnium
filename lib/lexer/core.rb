@@ -25,18 +25,8 @@ module Lexer
     end
 
     def next_token
+      ignore
       return new_eof_token if eos?
-
-      advance while whitespace?
-      advance until newline? || eos? if comment?
-
-      # a comment starts with # and closes with \n
-      if newline?
-        advance
-      elsif eos?
-        return new_eof_token
-      end
-
 
       (@pointer...@text.length).each do
         return tokenise
@@ -44,6 +34,15 @@ module Lexer
     end
 
     private
+
+    def ignore
+      advance while whitespace? || newline?
+
+      if comment?
+        advance until newline? # comment text
+        ignore if whitespace? || newline? # skip any other junk
+      end
+    end
 
     def eos?
       @pointer > @text.length - 1

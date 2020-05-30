@@ -1,10 +1,9 @@
-begin
-  begin
-    number := 2;
-    a := number;
-    b := 10 * a + 10 * number / 4;
-    c := a - - b
-  end;
-
-  x := 11;
+program pancake;
+var
+   a, b : int;
+   y    : float;
+begin # a comment ...
+   a := 2;
+   b := 10 * a + 10 * a / 4;
+   y := 20.0 / 7.0 + 3.14;
 end.

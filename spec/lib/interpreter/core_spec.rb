@@ -80,6 +80,70 @@ RSpec.describe Interpreter::Core do
     end
   end
 
+  describe '#visit_Program' do
+    subject(:visit_Program) { interpreter.visit_Program(node) }
+
+    let(:node) do
+      program_node(
+        name: 'test',
+        block: block_node(
+          variable_declarations: [
+            variable_declaration_node(
+              data_type: data_type_node(int_token),
+              identifier: identifier_node(identifier_token('a'))
+            )
+          ],
+          compound_statement: compound_node(
+            [
+              assignment_node(
+                left: identifier_node(identifier_token('a')),
+                operator: assignment_token,
+                right: number_node(integer_token(2))
+              ),
+              noop_node
+            ] # []
+          ) # compound_node
+        ) # block_node
+      ) # program_node
+    end
+
+    it 'creates the correct symbol_table' do
+      visit_Program
+      expect(interpreter.name).to eq('test')
+      expect(interpreter.symbol_table).to eq({ a: 2 })
+    end
+  end
+
+  describe '#visit_Block' do
+    subject(:visit_Block) { interpreter.visit_Block(node) }
+
+    let(:node) do
+      block_node(
+        variable_declarations: [
+          variable_declaration_node(
+            data_type: data_type_node(float_token),
+            identifier: identifier_node(identifier_token('a'))
+          )
+        ],
+        compound_statement: compound_node(
+          [
+            assignment_node(
+              left: identifier_node(identifier_token('a')),
+              operator: assignment_token,
+              right: number_node(integer_token(2.12))
+            ),
+            noop_node
+          ] # []
+        ) # compound_node
+      ) # block_node
+    end
+
+    it 'creates the correct symbol_table' do
+      visit_Block
+      expect(interpreter.symbol_table).to eq({ a: 2.12 })
+    end
+  end
+
   describe '#visit_Compound' do
     subject(:visit_Compound) { interpreter.visit_Compound(node) }
 
@@ -104,6 +168,19 @@ RSpec.describe Interpreter::Core do
       visit_Compound
       expect(interpreter.symbol_table).to eq({ number: 2, a: 2 })
     end
+  end
+
+  describe '#visit_VariableDeclaration' do
+    subject(:visit_VariableDeclaration) { interpreter.visit_VariableDeclaration(node) }
+
+    let(:node) do
+      variable_declaration_node(
+        data_type: data_type_node(int_token),
+        identifier: identifier_node(identifier_token('a'))
+      )
+    end
+
+    it { is_expected.to be nil }
   end
 
   describe '#visit_Assignment' do
@@ -145,7 +222,18 @@ RSpec.describe Interpreter::Core do
     end
   end
 
+  describe '#visit_DataType' do
+    subject(:visit_DataType) { interpreter.visit_DataType(node) }
+
+    let(:node) do
+      data_type_node(int_token)
+    end
+
+    it { is_expected.to be nil }
+  end
+
   describe '#visit_NoOperation' do
+
     subject(:visit_NoOperation) { interpreter.visit_NoOperation(node) }
 
     let(:node) { 'noop' }

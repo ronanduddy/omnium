@@ -55,7 +55,7 @@ module Parser
         end
       end
 
-      declarations
+      declarations.flatten
     end
 
     def variable_declaration

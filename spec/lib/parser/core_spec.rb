@@ -16,40 +16,36 @@ RSpec.describe Parser::Core do
 
     context 'program definition' do
       let(:input) do
-        'program test;' \
-        'var ' \
-          'a, b : int;' \
-          'y    : float;' \
-        "begin # comment here\n" \
-          'a := 2;' \
-          'b := 10 * a + 10 * a / 4;' \
-          'y := 20 / 7 + 3.14;' \
-        'end.'
+        "program pancake;\n" \
+        "var\n" \
+          "   a, b : int;\n" \
+          "   y    : float;\n" \
+        "begin # a comment ...\n" \
+          "a := 2;\n" \
+          "b := 10 * a + 10 * a / 4;\n" \
+          "y := 20.0 / 7.0 + 3.14;\n" \
+        "end."
       end
 
       let(:tree) do
         program_node(
-          name: "test",
+          name: 'pancake',
           block: block_node(
             variable_declarations: [
-              [
-                variable_declaration_node(
-                  data_type: data_type_node(int_token),
-                  identifier: identifier_node(identifier_token('a'))
-                ),
-                variable_declaration_node(
-                  data_type: data_type_node(int_token),
-                  identifier: identifier_node(identifier_token('b'))
-                )
-              ],
-              [
-                variable_declaration_node(
-                  data_type: data_type_node(float_token),
-                  identifier: identifier_node(identifier_token('y'))
-                )
-              ]
+              variable_declaration_node(
+                data_type: data_type_node(int_token),
+                identifier: identifier_node(identifier_token('a'))
+              ),
+              variable_declaration_node(
+                data_type: data_type_node(int_token),
+                identifier: identifier_node(identifier_token('b'))
+              ),
+              variable_declaration_node(
+                data_type: data_type_node(float_token),
+                identifier: identifier_node(identifier_token('y'))
+              )
             ],
-            compound_statements: compound_node(
+            compound_statement: compound_node(
               [
                 assignment_node(
                   left: identifier_node(identifier_token('a')),
@@ -82,9 +78,9 @@ RSpec.describe Parser::Core do
                   operator: assignment_token,
                   right: binary_operator_node(
                     left: binary_operator_node(
-                      left: number_node(integer_token(20)),
+                      left: number_node(real_token(20.0)),
                       operator: divide_token,
-                      right: number_node(integer_token(7))
+                      right: number_node(real_token(7.0))
                     ),
                     operator: plus_token,
                     right: number_node(real_token(3.14))

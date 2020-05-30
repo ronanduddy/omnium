@@ -8,11 +8,12 @@ module Interpreter
 
     class InterpreterError < StandardError; end
 
-    attr_reader :symbol_table
+    attr_reader :symbol_table, :name
 
     def initialize(parser)
       @parser = parser
       @symbol_table = {}
+      @name = nil
     end
 
     def interpret
@@ -22,8 +23,25 @@ module Interpreter
 
     # concrete visitor operations below
 
+    def visit_Program(node)
+      @name = node.name
+      visit(node.block)
+    end
+
+    def visit_Block(node)
+      node.variable_declarations.each do |variable_declaration|
+        visit(variable_declaration)
+      end
+
+      visit(node.compound_statement)
+    end
+
     def visit_Compound(node)
       node.children.each { |child| visit(child) }
+    end
+
+    def visit_VariableDeclaration(node)
+      # noop
     end
 
     def visit_Assignment(node)
@@ -34,6 +52,10 @@ module Interpreter
       symbol_table.fetch(node.name.intern)
     rescue KeyError
       raise(InterpreterError, "Variable '#{node.name}' not found")
+    end
+
+    def visit_DataType(node)
+      # noop
     end
 
     def visit_NoOperation(node)
