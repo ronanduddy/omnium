@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    pluck (0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -39,6 +44,7 @@ GEM
     pry-nav (0.3.0)
       pry (>= 0.9.10, < 0.13.0)
     rainbow (3.0.0)
+    rake (13.0.1)
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
@@ -75,8 +81,10 @@ PLATFORMS
 DEPENDENCIES
   guard (~> 2.16)
   guard-rspec (~> 4.7, >= 4.7.3)
+  pluck!
   pry (~> 0.12.2)
   pry-nav (~> 0.3.0)
+  rake (~> 13.0)
   rspec (~> 3.9)
   rubocop (~> 0.81.0)
 
