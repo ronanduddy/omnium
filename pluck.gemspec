@@ -20,11 +20,11 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = '>= 2.7.0'
 
-  spec.add_development_dependency 'pry', '~> 0.12.2'
-  spec.add_development_dependency 'pry-nav', '~> 0.3.0'
-  spec.add_development_dependency 'rspec', '~> 3.9'
-  spec.add_development_dependency 'rake', '~> 13.0'
-  spec.add_development_dependency 'rubocop', '~> 0.81.0'
   spec.add_development_dependency 'guard', '~> 2.16'
   spec.add_development_dependency 'guard-rspec', '~> 4.7', '>= 4.7.3'
+  spec.add_development_dependency 'pry', '~> 0.12.2'
+  spec.add_development_dependency 'pry-nav', '~> 0.3.0'
+  spec.add_development_dependency 'rake', '~> 13.0'
+  spec.add_development_dependency 'rspec', '~> 3.9'
+  spec.add_development_dependency 'rubocop', '~> 0.81.0'
 end
