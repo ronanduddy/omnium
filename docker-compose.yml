@@ -4,6 +4,7 @@ services:
   pluck:
     build: .
     image: pluck
+    entrypoint: bundle exec bin/pluck
     volumes:
       - ./:/usr/src/app
       - .ash_history:/root/.ash_history

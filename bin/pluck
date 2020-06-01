@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require './lib/pluck'
+require 'pluck'
 
 unless ARGV.length == 1
   raise ArgumentError, "Usage: #{$PROGRAM_NAME} <filename>"
 end
 
-puts CLI.new(ARGV).run
+puts Pluck::CLI.new(ARGV).run

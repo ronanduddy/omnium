@@ -8,7 +8,7 @@ build:
 	@docker-compose build $(app)
 
 run:
-	$(docker_run) ./bin/pluck $(file)
+	$(docker_run) $(filename)
 
 shell: build
 	$(docker_run) sh
