@@ -2,11 +2,9 @@
 
 # frozen_text_literal: true
 
-require 'pluck/common'
-require 'pluck/lexer'
 require 'support/matchers/token'
 
-RSpec.describe Pluck::Lexer::Core do
+RSpec.describe Lexer::Core do
   subject(:lex) { described_class.new(text) }
 
   describe '#next_token' do

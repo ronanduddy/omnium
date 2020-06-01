@@ -2,19 +2,18 @@
 
 # frozen_text_literal: true
 
-require 'pluck/common'
 require 'support/matchers/token'
 
-RSpec.describe Pluck::Common do
+RSpec.describe Common do
   let(:dummy) do
     class Dummy
-      include Pluck::Common
+      include Common
     end.new
   end
 
   # below similar logic should be pulled into a helper or something
 
-  Pluck::Common::VALUE_BASED_TOKENS.each do |token|
+  Common::VALUE_BASED_TOKENS.each do |token|
     describe "##{token[:type]}?" do
       subject { dummy.send("#{token[:type]}?") }
 
@@ -66,7 +65,7 @@ RSpec.describe Pluck::Common do
     end
   end
 
-  Pluck::Common::PARAMETERISED_TOKENS.each do |token|
+  Common::PARAMETERISED_TOKENS.each do |token|
     describe "##{token[:type]}?" do
       subject { dummy.send("#{token[:type]}?") }
 
@@ -90,7 +89,7 @@ RSpec.describe Pluck::Common do
     end
   end
 
-  Pluck::Common::NIL_VALUE_TOKENS.each do |token|
+  Common::NIL_VALUE_TOKENS.each do |token|
     describe "##{token[:type]}?" do
       subject { dummy.send("#{token[:type]}?") }
 
@@ -114,7 +113,7 @@ RSpec.describe Pluck::Common do
     end
   end
 
-  Pluck::Common::RESERVED_KEYWORDS.each_pair do |key, _value|
+  Common::RESERVED_KEYWORDS.each_pair do |key, _value|
     describe "##{key}?" do
       subject { dummy.send("#{key}?") }
 

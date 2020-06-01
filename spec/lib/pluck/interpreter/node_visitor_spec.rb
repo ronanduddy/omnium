@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
-require 'pluck/common'
-require 'pluck/parser'
-require 'pluck/interpreter/node_visitor'
 require 'support/helpers/token_helper'
 require 'support/helpers/ast_node_helpers'
 
-RSpec.describe Pluck::Interpreter::NodeVisitor do
+RSpec.describe Interpreter::NodeVisitor do
   subject(:node_visitor) { described_class.new }
 
   let(:node) do

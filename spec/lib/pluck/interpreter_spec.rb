@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require 'pluck/common'
-require 'pluck/interpreter'
-
-RSpec.describe Pluck::Interpreter do
+RSpec.describe Interpreter do
   describe '.new' do
     subject(:new) { described_class.new('parser') }
 

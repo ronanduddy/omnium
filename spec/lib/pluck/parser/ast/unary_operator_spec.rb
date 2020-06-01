@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require 'pluck/parser/ast/base'
-require 'pluck/parser/ast/unary_operator'
 require 'support/helpers/token_helper'
 require 'support/matchers/token'
 
-RSpec.describe Pluck::Parser::AST::UnaryOperator do
+RSpec.describe Parser::AST::UnaryOperator do
   subject(:unary_operator) { described_class.new(operator, operand) }
 
   let(:operator) { minus_token }

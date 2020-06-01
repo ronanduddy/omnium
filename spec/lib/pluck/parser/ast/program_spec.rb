@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require 'pluck/parser/ast/base'
-require 'pluck/parser/ast/program'
-
-RSpec.describe Pluck::Parser::AST::Program do
+RSpec.describe Parser::AST::Program do
   subject(:program) { described_class.new(name, block) }
 
   let(:name) { 'pancake_town' }

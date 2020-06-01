@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require 'pluck/parser/ast/base'
-require 'pluck/parser/ast/compound'
-
-RSpec.describe Pluck::Parser::AST::Compound do
+RSpec.describe Parser::AST::Compound do
   subject(:compound) { described_class.new }
 
   describe '#initialize' do

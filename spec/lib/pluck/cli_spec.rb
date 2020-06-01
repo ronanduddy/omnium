@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require 'pluck/cli'
-
-RSpec.describe Pluck::CLI do
+RSpec.describe CLI do
   describe '.new' do
     subject(:new) { described_class.new(['test.plk']) }
 

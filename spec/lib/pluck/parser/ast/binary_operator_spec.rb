@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require 'pluck/parser/ast/base'
-require 'pluck/parser/ast/binary_operator'
 require 'support/helpers/token_helper'
 require 'support/matchers/token'
 
-RSpec.describe Pluck::Parser::AST::BinaryOperator do
+RSpec.describe Parser::AST::BinaryOperator do
   subject(:binary_operator) { described_class.new(left, operator, right) }
 
   let(:left) { integer_token 2 }

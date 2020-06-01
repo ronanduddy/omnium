@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-require 'pluck/parser/ast/assignment'
-
 module Helpers
   module AstNodeHelpers
     module AssignmentHelper
       def assignment_node(left:, operator:, right:)
-        Pluck::Parser::AST::Assignment.new(left, operator, right)
+        Parser::AST::Assignment.new(left, operator, right)
       end
     end
   end

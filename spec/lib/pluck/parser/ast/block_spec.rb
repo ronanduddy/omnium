@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require 'pluck/parser/ast/base'
-require 'pluck/parser/ast/block'
-
-RSpec.describe Pluck::Parser::AST::Block do
+RSpec.describe Parser::AST::Block do
   subject(:block) { described_class.new(variable_declarations, compound_statement) }
 
   let(:variable_declarations) { ['a int', 'b int'] }

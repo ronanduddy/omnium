@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
-require 'pluck/parser/ast/base'
-require 'pluck/parser/ast/data_type'
 require 'support/helpers/token_helper'
 
-RSpec.describe Pluck::Parser::AST::DataType do
+RSpec.describe Parser::AST::DataType do
   subject(:data_type) { described_class.new(token) }
 
   let(:token) { int_token }

@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require 'pluck/parser/ast/base'
-require 'pluck/parser/ast/variable_declaration'
 require 'support/helpers/token_helper'
 require 'support/matchers/token'
 
-RSpec.describe Pluck::Parser::AST::VariableDeclaration do
+RSpec.describe Parser::AST::VariableDeclaration do
   subject(:variable_declaration) { described_class.new(identifier, data_type) }
 
   let(:identifier) { identifier_token('num') }

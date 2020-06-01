@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require 'pluck/common'
-require 'pluck/lexer'
-
-RSpec.describe Pluck::Lexer do
+RSpec.describe Lexer do
   describe '.new' do
     subject(:new) { described_class.new('text') }
 

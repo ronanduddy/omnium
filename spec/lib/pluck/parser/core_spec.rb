@@ -1,14 +1,11 @@
 # frozen_string_literal: true
 
-require 'pluck/common'
-require 'pluck/lexer'
-require 'pluck/parser'
 require 'support/helpers/lexer_helper'
 require 'support/helpers/token_helper'
 require 'support/helpers/ast_node_helpers'
 require 'support/matchers/ast'
 
-RSpec.describe Pluck::Parser::Core do
+RSpec.describe Parser::Core do
   subject(:parser) { described_class.new(lexer(input)) }
 
   describe '#parse' do

@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
-require 'pluck/common'
-require 'pluck/parser'
-require 'pluck/interpreter'
 require 'support/helpers/token_helper'
 require 'support/helpers/ast_node_helpers'
 
-RSpec.describe Pluck::Interpreter::Core do
+RSpec.describe Interpreter::Core do
   subject(:interpreter) { described_class.new(parser) }
 
   let(:parser) { instance_double(Pluck::Parser::Core, parse: tree) }

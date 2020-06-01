@@ -2,20 +2,17 @@
 
 # frozen_text_literal: true
 
-require 'pluck/common'
-require 'pluck/lexer/token'
-require 'pluck/lexer/token_helper'
 require 'support/matchers/token'
 
-RSpec.describe Pluck::Lexer::TokenHelper do
+RSpec.describe Lexer::TokenHelper do
   let(:dummy) do
     class Dummy
-      include Pluck::Lexer::TokenHelper
+      include Lexer::TokenHelper
     end.new
   end
 
   describe 'token creation' do
-    Pluck::Common::VALUE_BASED_TOKENS.each do |token|
+    Common::VALUE_BASED_TOKENS.each do |token|
       context "#new_#{token[:type]}_token" do
         subject { dummy.send("new_#{token[:type]}_token") }
 
@@ -23,7 +20,7 @@ RSpec.describe Pluck::Lexer::TokenHelper do
       end
     end
 
-    Pluck::Common::PARAMETERISED_TOKENS.each do |token|
+    Common::PARAMETERISED_TOKENS.each do |token|
       context "#new_#{token[:type]}_token(:foo)" do
         subject { dummy.send("new_#{token[:type]}_token", :foo) }
 
@@ -31,7 +28,7 @@ RSpec.describe Pluck::Lexer::TokenHelper do
       end
     end
 
-    Pluck::Common::NIL_VALUE_TOKENS.each do |token|
+    Common::NIL_VALUE_TOKENS.each do |token|
       context "#new_#{token[:type]}_token" do
         subject { dummy.send("new_#{token[:type]}_token") }
 
@@ -39,7 +36,7 @@ RSpec.describe Pluck::Lexer::TokenHelper do
       end
     end
 
-    Pluck::Common::RESERVED_KEYWORDS.each_pair do |key, value|
+    Common::RESERVED_KEYWORDS.each_pair do |key, value|
       context "#new_#{key}_token" do
         subject { dummy.send("new_#{key}_token") }
 

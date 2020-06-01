@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require 'pluck/parser/ast/base'
-require 'pluck/parser/ast/assignment'
 require 'support/helpers/token_helper'
 require 'support/matchers/token'
 
-RSpec.describe Pluck::Parser::AST::Assignment do
+RSpec.describe Parser::AST::Assignment do
   subject(:assignment) { described_class.new(left, operator, right) }
 
   let(:left) { identifier_token 'num' }

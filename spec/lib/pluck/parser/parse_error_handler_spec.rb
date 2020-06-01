@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require 'pluck/parser/parse_error_handler'
-
-RSpec.describe Pluck::Parser::ParseErrorHandler do
+RSpec.describe Parser::ParseErrorHandler do
   let(:dummy) do
     class Dummy
-      include Pluck::Parser::ParseErrorHandler
+      include Parser::ParseErrorHandler
     end.new
   end
 

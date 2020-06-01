@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+require 'pluck'
 require 'pry'
+
+include Pluck
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-require 'pluck/parser/ast/program'
-
 module Helpers
   module AstNodeHelpers
     module ProgramHelper
       def program_node(name:, block:)
-        Pluck::Parser::AST::Program.new(name, block)
+        Parser::AST::Program.new(name, block)
       end
     end
   end
