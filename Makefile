@@ -1,9 +1,11 @@
+.PHONY: build run shell bundle test guard lint irb stop rmi reset
+
 app = pluck
 docker_run = @docker-compose run --rm $(app)
 
 build:
 	@touch .ash_history
-	@docker-compose build
+	@docker-compose build $(app)
 
 run:
 	$(docker_run) ./bin/pluck $(file)
@@ -15,7 +17,8 @@ bundle:
 	$(docker_run) bundle
 
 test:
-	$(docker_run) bundle exec rspec
+	@docker-compose build test
+	@docker-compose run --rm test
 
 guard:
 	$(docker_run) bundle exec guard -c

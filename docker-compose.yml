@@ -7,3 +7,7 @@ services:
     volumes:
       - ./:/usr/src/app
       - .ash_history:/root/.ash_history
+
+  test:
+    build: .
+    command: bundle exec rake
