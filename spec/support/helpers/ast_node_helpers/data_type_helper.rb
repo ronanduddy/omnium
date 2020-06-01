@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-require 'parser/ast/data_type'
+require 'pluck/parser/ast/data_type'
 
 module Helpers
   module AstNodeHelpers
     module DataTypeHelper
-      include Parser::AST
-
       def data_type_node(token)
-        DataType.new(token)
+        Pluck::Parser::AST::DataType.new(token)
       end
     end
   end

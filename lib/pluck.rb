@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module Pluck
-  require './lib/common'
-  require './lib/lexer'
-  require './lib/parser'
-  require './lib/interpreter'
-  require './lib/cli'
+  require 'pluck/common'
+  require 'pluck/lexer'
+  require 'pluck/parser'
+  require 'pluck/interpreter'
+  require 'pluck/cli'
 end

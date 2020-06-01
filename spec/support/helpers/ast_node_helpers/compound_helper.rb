@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-require 'parser/ast/compound'
+require 'pluck/parser/ast/compound'
 
 module Helpers
   module AstNodeHelpers
     module CompoundHelper
-      include Parser::AST
-
       def compound_node(nodes)
-        Compound.new.append(nodes)
+        Pluck::Parser::AST::Compound.new.append(nodes)
       end
     end
   end

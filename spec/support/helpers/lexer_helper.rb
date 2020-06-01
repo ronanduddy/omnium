@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require 'lexer/core'
+require 'pluck/lexer/core'
 
 module Helpers
   module LexerHelper
     def lexer(input)
-      Lexer::Core.new(input)
+      Pluck::Lexer::Core.new(input)
     end
   end
 end

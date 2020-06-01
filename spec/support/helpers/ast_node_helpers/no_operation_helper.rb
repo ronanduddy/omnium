@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
-require 'parser/ast/no_operation'
+require 'pluck/parser/ast/no_operation'
 
 module Helpers
   module AstNodeHelpers
     module NoOperationHelper
-      include Parser::AST
-
       def noop_node
-        NoOperation.new
+        Pluck::Parser::AST::NoOperation.new
       end
     end
   end
