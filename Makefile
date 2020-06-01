@@ -1,38 +1,29 @@
-.PHONY: build run shell bundle test guard lint irb stop rmi reset
-
-app = pluck
-docker_run = @docker-compose run --rm $(app)
-
-build:
-	@touch .ash_history
-	@docker-compose build $(app)
+.PHONY: run test shell irb bundle guard lint
 
 run:
-	$(docker_run) $(filename)
-
-shell: build
-	$(docker_run) sh
-
-bundle:
-	$(docker_run) bundle
+	@docker-compose build pluck
+	@docker-compose run --rm pluck $(filename)
 
 test:
 	@docker-compose build test
 	@docker-compose run --rm test
 
-guard:
-	$(docker_run) bundle exec guard -c
-
-lint:
-	$(docker_run) rubocop -a
+shell:
+	@docker-compose build dev
+	@docker-compose run --rm dev sh
 
 irb:
-	$(docker_run) irb
+	@docker-compose build dev
+	@docker-compose run --rm dev bundle exec bin/console
 
-stop:
-	@docker-compose down
+bundle:
+	@docker-compose build dev
+	@docker-compose run --rm dev bundle
 
-rmi:
-	@docker image rm $(app) || true
+guard:
+	@docker-compose build dev
+	@docker-compose run --rm dev bundle exec guard -c
 
-reset: stop rmi build
+lint:
+	@docker-compose build dev
+	@docker-compose run --rm dev rubocop -a

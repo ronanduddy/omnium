@@ -7,7 +7,12 @@ services:
     entrypoint: bundle exec bin/pluck
     volumes:
       - ./:/usr/src/app
-      - .ash_history:/root/.ash_history
+
+  dev:
+    build: .
+    image: pluck
+    volumes:
+      - ./:/usr/src/app
 
   test:
     build: .
