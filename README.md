@@ -16,7 +16,7 @@ Omnium is
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'omnium', git: "https://github.com/ronanduddy/omnium"
+gem 'omnium'
 ```
 
 And then execute:

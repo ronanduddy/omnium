@@ -18,4 +18,4 @@ services:
 
   release:
     build: .
-    command: bundle exec rake signin release
+    command: bundle exec rake build release_gem

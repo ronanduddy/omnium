@@ -7,7 +7,8 @@ RSpec::Core::RakeTask.new(:spec)
 
 task default: :spec
 
-desc 'Signin to RubyGems.org'
-task :signin do
-  sh 'gem signin'
+desc 'Push gem to RubyGems.org'
+task :release_gem do
+  gem = Dir['pkg/*.gem'].sort.last
+  sh "gem push #{gem}"
 end
