@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'omnium'
+
+unless ARGV.length == 1
+  raise ArgumentError, "Usage: #{$PROGRAM_NAME} <filename>"
+end
+
+puts Omnium::CLI.new(ARGV).run

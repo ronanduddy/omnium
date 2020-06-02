@@ -1,8 +1,8 @@
 .PHONY: run test shell irb bundle guard lint
 
 run:
-	@docker-compose build pluck
-	@docker-compose run --rm pluck $(filename)
+	@docker-compose build omnium
+	@docker-compose run --rm omnium $(filename)
 
 test:
 	@docker-compose build test

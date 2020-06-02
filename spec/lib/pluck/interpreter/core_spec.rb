@@ -6,7 +6,7 @@ require 'support/helpers/ast_node_helpers'
 RSpec.describe Interpreter::Core do
   subject(:interpreter) { described_class.new(parser) }
 
-  let(:parser) { instance_double(Pluck::Parser::Core, parse: tree) }
+  let(:parser) { instance_double(Omnium::Parser::Core, parse: tree) }
   let(:tree) do
     compound_node(
       [

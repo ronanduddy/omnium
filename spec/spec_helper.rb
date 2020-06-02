@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require 'pluck'
+require 'omnium'
 require 'pry'
 
-include Pluck
+include Omnium
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate

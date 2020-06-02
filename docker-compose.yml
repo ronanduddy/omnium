@@ -1,16 +1,16 @@
 version: '3.7'
 
 services:
-  pluck:
+  omnium:
     build: .
-    image: pluck
-    entrypoint: bundle exec bin/pluck
+    image: omnium
+    entrypoint: bundle exec bin/omnium
     volumes:
       - ./:/usr/src/app
 
   dev:
     build: .
-    image: pluck
+    image: omnium
     volumes:
       - ./:/usr/src/app
 
