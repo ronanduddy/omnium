@@ -3,17 +3,19 @@ version: '3.7'
 services:
   omnium:
     build: .
-    image: omnium
     entrypoint: bundle exec bin/omnium
     volumes:
       - ./:/usr/src/app
 
   dev:
     build: .
-    image: omnium
     volumes:
       - ./:/usr/src/app
 
   test:
     build: .
     command: bundle exec rake
+
+  release:
+    build: .
+    command: bundle exec rake signin release
