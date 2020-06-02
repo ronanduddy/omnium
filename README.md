@@ -40,7 +40,7 @@ bundle exec omnium hello.om
 
 ## Development
 
-After checking out the repo, run `make run file=hello.om` to run the example program. Then, run `make test` to run all the tests or `make guard` to use guard for testing. You can also run `make irb` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `make run filename=hello.om` to run the example program. Then, run `make test` to run all the tests or `make guard` to use guard for testing. You can also run `make irb` for an interactive prompt that will allow you to experiment.
 
 ## Contributing
 
