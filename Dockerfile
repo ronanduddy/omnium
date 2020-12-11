@@ -1,5 +1,5 @@
-FROM ruby:2.7.1-alpine3.11
-MAINTAINER Ronan Duddy <ronanduddy@live.ie>
+FROM ruby:2.7.2-alpine3.11
+MAINTAINER Ronan Duddy <dev@ronanduddy.xyz>
 
 ENV BUILD_PACKAGES build-base less git
 
