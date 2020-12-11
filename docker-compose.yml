@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 services:
   omnium:
@@ -6,16 +6,13 @@ services:
     entrypoint: bundle exec bin/omnium
     volumes:
       - ./:/usr/src/app
-
   dev:
     build: .
     volumes:
       - ./:/usr/src/app
-
   test:
     build: .
     command: bundle exec rake
-
   release:
     build: .
     command: bundle exec rake build release_gem
