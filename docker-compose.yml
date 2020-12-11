@@ -3,7 +3,7 @@ version: '3.8'
 services:
   omnium:
     build: .
-    entrypoint: bundle exec bin/omnium
+    entrypoint: bundle exec exe/omnium
     volumes:
       - ./:/usr/src/app
   dev:
